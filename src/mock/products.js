@@ -6,7 +6,7 @@ import vegeterianImg from '../assets/pizza-data/5.jpg';
 
 export const products = [
     {
-        id: "1",
+        id: 1,
         name: "Пепперони",
         image: pepperoniImg,
         price: 599,
@@ -14,7 +14,7 @@ export const products = [
             "Классическая пицца с пикантными колбасками пепперони и сыром моцарелла на тонком тесте.",
     },
     {
-        id: "2",
+        id: 2,
         name: "Маргарита",
         image: margaritaImg,
         price: 450,
@@ -22,7 +22,7 @@ export const products = [
             "Легендарная пицца со свежими томатами, базиликом и сливочным сыром.",
     },
     {
-        id: "3",
+        id: 3,
         name: "Грибная",
         image: mushroomImg,
         price: 499,
@@ -30,7 +30,7 @@ export const products = [
             "Нежная пицца с шампиньонами, сыром и легким сливочным соусом.",
     },
     {
-        id: "4",
+        id: 4,
         name: "Мясной Пир",
         image: meatCelebrationImg,
         price: 650,
@@ -38,28 +38,28 @@ export const products = [
             "Пицца для любителей мяса: ветчина, бекон, колбаски и двойной сыр.",
     },
     {
-        id: "5",
+        id: 5,
         name: "Вегетарианская",
         image: vegeterianImg,
         price: 550,
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
-        id: "6",
+        id: 6,
         name: "Пепперони",
         image: pepperoniImg,
         price: 550,
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
-        id: "7",
+        id: 7,
         name: "Маргарита",
         image: margaritaImg,
         price: 550,
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
-        id: "8",
+        id: 8,
         name: "Грибная",
         image: mushroomImg,
         price: 550,

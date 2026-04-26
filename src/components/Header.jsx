@@ -1,4 +1,5 @@
 import logo from "../assets/logo.svg";
+import cartIcon from "../assets/cart-icon.svg"
 import { Link, useLocation } from "react-router-dom"; 
 
 export default function Header() {
@@ -24,7 +25,7 @@ export default function Header() {
           <span>520 ₽</span>
           <span className="h-5 w-px bg-white/30" />
           <span className="inline-flex items-center gap-2">
-            <span className="text-base">🛒</span>
+            <span className="text-base"><img src={cartIcon} alt="cart-icon" /></span>
             <span>3</span>
           </span>
         </Link>
