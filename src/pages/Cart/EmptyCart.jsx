@@ -1,4 +1,5 @@
 import emptyCart from '../../assets/empty-cart.png';
+import { Link } from "react-router-dom"; 
 
 export default function EmptyCart() {
   return (
@@ -19,9 +20,9 @@ export default function EmptyCart() {
         className="mt-10 w-[300px] h-auto object-contain"
       />
 
-      <button type='button' className="mt-10 px-8 py-4 rounded-full bg-[#282828] text-white text-[16px] font-bold cursor-pointer">
+      <Link to="/" className="mt-10 px-8 py-4 rounded-full bg-[#282828] text-white text-[16px] font-bold cursor-pointer">
         Вернуться назад
-      </button>
+      </Link>
     </div>
     
   )
