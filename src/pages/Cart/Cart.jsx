@@ -6,7 +6,12 @@ import EmptyCart from "./EmptyCart";
 import { useBasket } from "../../context/BasketContext";
 
 export default function Cart() {
-  const { basket } = useBasket();
+  const { basket, addItem, decreaseItem, clearBasket } = useBasket();
+
+  const totalPrice = basket.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="bg-[#FFDF8C] min-h-screen w-full overflow-x-hidden flex items-center justify-center p-4 sm:p-6 md:p-8">
@@ -15,11 +20,15 @@ export default function Cart() {
 
         {basket.length > 0 ? (
           <div className="mt-[50px] max-w-[827px] w-full mx-auto flex-1 flex flex-col">
-            <CartHeader />
+            <CartHeader clearBasket={clearBasket} />
             <div className="flex-1 flex flex-col items-center">
-              <CartList items={basket} />
+              <CartList
+                items={basket}
+                addItem={addItem}
+                decreaseItem={decreaseItem}
+              />
             </div>
-            <CartBottom />
+            <CartBottom totalPrice={totalPrice} />
           </div>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center">

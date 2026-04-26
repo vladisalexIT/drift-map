@@ -1,10 +1,8 @@
 import cartIcon from "../../assets/cart-black.svg";
 import trashBin from "../../assets/trash-bin.svg";
-import { useBasket } from "../../context/BasketContext";
 
 
-export default function CartHeader() {
-    const { clearBasket } = useBasket();
+export default function CartHeader({ clearBasket }) {
     return (
         <div className="flex justify-between items-center pb-[30px]">
             <div className="flex items-center gap-3">
