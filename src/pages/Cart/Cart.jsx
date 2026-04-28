@@ -13,6 +13,11 @@ export default function Cart() {
     0
   );
 
+  const totalCount = basket.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
   return (
     <div className="bg-[#FFDF8C] min-h-screen w-full overflow-x-hidden flex items-center justify-center p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-[1340px] min-h-[980px] py-[42px] px-[67px] bg-white rounded-[10px] flex flex-col">
@@ -28,7 +33,7 @@ export default function Cart() {
                 decreaseItem={decreaseItem}
               />
             </div>
-            <CartBottom totalPrice={totalPrice} />
+            <CartBottom totalCount={totalCount} totalPrice={totalPrice} />
           </div>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center">

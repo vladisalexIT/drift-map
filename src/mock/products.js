@@ -10,6 +10,7 @@ export const products = [
         name: "Пепперони",
         image: pepperoniImg,
         price: 599,
+        category: "Мясные",
         description:
             "Классическая пицца с пикантными колбасками пепперони и сыром моцарелла на тонком тесте.",
     },
@@ -18,6 +19,7 @@ export const products = [
         name: "Маргарита",
         image: margaritaImg,
         price: 450,
+        category: "Вегетарианская",
         description:
             "Легендарная пицца со свежими томатами, базиликом и сливочным сыром.",
     },
@@ -26,6 +28,7 @@ export const products = [
         name: "Грибная",
         image: mushroomImg,
         price: 499,
+        category: "Вегетарианская",
         description:
             "Нежная пицца с шампиньонами, сыром и легким сливочным соусом.",
     },
@@ -34,6 +37,7 @@ export const products = [
         name: "Мясной Пир",
         image: meatCelebrationImg,
         price: 650,
+        category: "Мясные",
         description:
             "Пицца для любителей мяса: ветчина, бекон, колбаски и двойной сыр.",
     },
@@ -42,6 +46,7 @@ export const products = [
         name: "Вегетарианская",
         image: vegeterianImg,
         price: 550,
+        category: "Вегетарианская",
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
@@ -49,6 +54,7 @@ export const products = [
         name: "Пепперони",
         image: pepperoniImg,
         price: 550,
+        category: "Мясные",
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
@@ -56,6 +62,7 @@ export const products = [
         name: "Маргарита",
         image: margaritaImg,
         price: 550,
+        category: "Вегетарианская",
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
     {
@@ -63,6 +70,7 @@ export const products = [
         name: "Грибная",
         image: mushroomImg,
         price: 550,
+        category: "Вегетарианская",
         description: "Освежающая пицца с цукини, перцем, луком и оливками.",
     },
-]
+];

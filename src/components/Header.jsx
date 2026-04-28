@@ -1,9 +1,21 @@
 import logo from "../assets/logo.svg";
 import cartIcon from "../assets/cart-icon.svg"
 import { Link, useLocation } from "react-router-dom"; 
+import { useBasket } from "../context/BasketContext";
 
 export default function Header() {
   const location = useLocation();
+  const { basket } = useBasket();
+
+  const totalPrice = basket.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  const totalCount = basket.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   return (
     <div className="flex justify-between items-center pb-[40px] border-b border-solid border-[#f6f6f6] mb-10">
@@ -22,11 +34,11 @@ export default function Header() {
           to="/cart"
           className="inline-flex items-center gap-3 rounded-full bg-[#ff7a1a] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#f06f0f]"
         >
-          <span>520 ₽</span>
+          <span>{totalPrice}</span>
           <span className="h-5 w-px bg-white/30" />
           <span className="inline-flex items-center gap-2">
             <span className="text-base"><img src={cartIcon} alt="cart-icon" /></span>
-            <span>3</span>
+            <span>{totalCount}</span>
           </span>
         </Link>
       )}

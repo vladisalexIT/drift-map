@@ -9,22 +9,23 @@ const initialState = {
 function basketReducer(state, action) {
     switch (action.type) {
         case "ADD_ITEM": {
-            const existingItem = state.itemsBasket.find((item) => item.id === action.payload.id);
+            let itemAdded = false;
 
-            if (existingItem) {
-                return {
-                    ...state,
-                    itemsBasket: state.itemsBasket.map((item) =>
-                        item.id === action.payload.id
-                            ? { ...item, quantity: item.quantity + 1 }
-                            : item
-                    ),
-                };
+            const updatedItems = state.itemsBasket.map((item) => {
+                if (item.id === action.payload.id) {
+                    itemAdded = true;
+                    return { ...item, quantity: item.quantity + 1 };
+                }
+                return item;
+            });
+
+            if (itemAdded) {
+                return { ...state, itemsBasket: updatedItems };
             }
 
             return {
                 ...state,
-                itemsBasket: [...state.itemsBasket, { ...action.payload, quantity: 1 }],
+                itemsBasket: [...updatedItems, { ...action.payload, quantity: 1 }],
             };
         }
 
