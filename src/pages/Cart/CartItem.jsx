@@ -5,14 +5,14 @@ import meatCelebration from '../../assets/pizza-data/4.jpg';
 import vegeterian from '../../assets/pizza-data/5.jpg';
 
 
-export default function CartItem({ name, image, count, price, item, addItem, decreaseItem }) {
+export default function CartItem({ name, image, count, price, size, type, addItem, decreaseItem, item }) {
   return (
     <div className="flex items-center justify-between border-t border-[#F4F4F4] py-8 w-full h-auto max-h-[624px] mx-auto">
       <div className="flex items-center gap-4 w-[40%]">
         <img className="w-20 h-20" src={image} alt="Pizza" />
         <div>
           <h3 className="font-bold text-xl leading-none mb-[3px]">{name}</h3>
-          <p className="text-[#8D8D8D] text-lg">тонкое тесто, 26 см.</p>
+          <p className="text-[#8D8D8D] text-lg">{type}, {size}</p>
         </div>
       </div>
       
