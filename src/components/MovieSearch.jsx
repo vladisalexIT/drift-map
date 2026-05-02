@@ -95,7 +95,7 @@ export default function MovieSearch() {
                 />
                 <button
                     type="submit"
-                    className="h-12 shrink-0 rounded-xl bg-purple-600 px-8 font-semibold text-white transition hover:bg-purple-500 active:scale-95"
+                    className="h-12 shrink-0 rounded-xl bg-purple-600 px-8 font-semibold text-white transition hover:bg-purple-500 active:scale-95 cursor-pointer"
                 >
                     Найти
                 </button>

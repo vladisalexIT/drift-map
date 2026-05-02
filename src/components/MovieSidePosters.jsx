@@ -11,10 +11,11 @@ export default function MovieSidePosters() {
     const [rightPoster, setRightPoster] = useState(null);
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(true);
+    
+    const [offsetY, setOffsetY] = useState(160);
 
     useEffect(() => {
         const controller = new AbortController();
-
         async function fetchMovies() {
             try {
                 setLoading(true);
@@ -27,28 +28,44 @@ export default function MovieSidePosters() {
                 setLoading(false);
             }
         }
-
         fetchMovies();
-
         return () => controller.abort();
     }, []);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            const posterHeight = 450;
+            const initialTop = 160;
+            const gap = 100;
+            
+            const footer = document.querySelector('footer');
+            const footerTop = footer ? footer.offsetTop : document.documentElement.scrollHeight;
+            
+            let targetY = initialTop + scrollY;
+            
+            if (targetY + posterHeight + gap > footerTop) {
+                targetY = footerTop - posterHeight - gap;
+            }
+
+            setOffsetY(targetY);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [loading]);
+
     const pickPosters = useMemo(() => {
         if (!movies.length) return { left: null, right: null };
-
-        const shuffled = shuffleArray(movies).filter(
-            (movie) => movie.posterUrlPreview || movie.posterUrl
-        );
-
-        return {
-            left: shuffled[0] || null,
-            right: shuffled[1] || null,
-        };
+        const filtered = movies.filter(m => m.posterUrlPreview || m.posterUrl);
+        const shuffled = shuffleArray(filtered);
+        return { left: shuffled[0] || null, right: shuffled[1] || null };
     }, [movies]);
 
     useEffect(() => {
         if (!pickPosters.left && !pickPosters.right) return;
-
         setLeftPoster(pickPosters.left);
         setRightPoster(pickPosters.right);
         setVisible(true);
@@ -56,61 +73,64 @@ export default function MovieSidePosters() {
 
     useEffect(() => {
         if (!movies.length) return;
-
         const interval = setInterval(() => {
             setVisible(false);
-
             setTimeout(() => {
-                const shuffled = shuffleArray(movies).filter(
-                    (movie) => movie.posterUrlPreview || movie.posterUrl
-                );
-
+                const filtered = movies.filter(m => m.posterUrlPreview || m.posterUrl);
+                const shuffled = shuffleArray(filtered);
                 setLeftPoster(shuffled[0] || null);
                 setRightPoster(shuffled[1] || null);
                 setVisible(true);
-            }, 500);
-        }, 7000);
-
+            }, 800);
+        }, 8000);
         return () => clearInterval(interval);
     }, [movies]);
 
-    if (loading || (!leftPoster && !rightPoster)) {
-        return null;
-    }
+    if (loading || (!leftPoster && !rightPoster)) return null;
 
     return (
-        <>
-            <aside className="pointer-events-none fixed left-6 top-1/2 z-0 hidden -translate-y-1/2 xl:flex">
-                {leftPoster && (
-                    <PosterCard movie={leftPoster} visible={visible} />
-                )}
-            </aside>
+        <div className="pointer-events-none absolute inset-0 z-0 hidden 2xl:block">
+            <div
+                className="absolute transition-all duration-700 ease-out"
+                style={{ 
+                    top: `${offsetY}px`,
+                    left: 'calc(50% - 720px - 150px - 40px)' 
+                }}
+            >
+                {leftPoster && <PosterCard movie={leftPoster} visible={visible} />}
+            </div>
 
-            <aside className="pointer-events-none fixed right-6 top-1/2 z-0 hidden -translate-y-1/2 xl:flex">
-                {rightPoster && (
-                    <PosterCard movie={rightPoster} visible={visible} />
-                )}
-            </aside>
-        </>
+            <div
+                className="absolute transition-all duration-700 ease-out"
+                style={{ 
+                    top: `${offsetY}px`,
+                    right: 'calc(50% - 720px - 150px - 40px)' 
+                }}
+            >
+                {rightPoster && <PosterCard movie={rightPoster} visible={visible} />}
+            </div>
+        </div>
     );
 }
 
 function PosterCard({ movie, visible }) {
-    const poster = movie.posterUrlPreview || movie.posterUrl;
-    const title = movie.nameRu || movie.nameEn || "Movie poster";
-
+    const poster = movie.posterUrl || movie.posterUrlPreview;
+    
     return (
         <div
-            className={`relative h-[380px] w-[260px] overflow-hidden rounded-[28px] border border-white/10 bg-white/5 shadow-2xl transition-all duration-700 ease-out ${
-                visible ? "opacity-100 translate-y-0" : "opacity-0 scale-95"
+            className={`relative h-[450px] w-[300px] overflow-hidden rounded-[32px] border border-white/10 bg-gray-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ease-in-out ${
+                visible 
+                    ? "opacity-100 scale-100 blur-0 translate-y-0" 
+                    : "opacity-0 scale-110 blur-md translate-y-4"
             }`}
         >
             <img
                 src={poster}
-                alt={title}
-                className="h-full w-full object-cover"
+                alt="poster"
+                className="h-full w-full object-cover shadow-inner"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-white/5" />
+            <div className="absolute inset-0 rounded-[32px] ring-1 ring-inset ring-white/20" />
         </div>
     );
 }

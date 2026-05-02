@@ -11,7 +11,6 @@
     100% { transform: translateX(-180vw) translateY(-30px) rotate(-10deg); }
   }
 
-  /* Мягкое мерцание: от 0.4 до 0.8 яркости */
   @keyframes softTwinkle {
     0%, 100% { opacity: 0.4; transform: scale(1); }
     50% { opacity: 0.8; transform: scale(1.1); }
@@ -34,7 +33,6 @@
     animation: softTwinkle 6s ease-in-out infinite;
   }
 
-  /* Генерация позиций (можно добавить еще больше через тот же паттерн) */
   .star-1 { top: 5%; left: 8%; width: 2px; height: 2px; animation-delay: 0s; }
   .star-2 { top: 12%; left: 15%; width: 3px; height: 3px; animation-delay: 1s; }
   .star-3 { top: 8%; left: 45%; width: 2px; height: 2px; animation-delay: 2s; }
