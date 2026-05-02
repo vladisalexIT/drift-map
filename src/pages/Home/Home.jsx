@@ -7,6 +7,7 @@ import CategoriesTabs from "./ui/CategoriesTabs";
 import SortDropdown from "./ui/SortDropdown";
 import ProductsGrid from "./ui/ProductsGrid";
 import SpaceBackground from "../../components/SpaceBackground";
+import MovieSearch from "../../components/MovieSearch";
 
 export default function HomePage() {
     const { addItem, basket } = useBasket();
@@ -30,6 +31,8 @@ export default function HomePage() {
 
             <div className="relative z-10 mx-auto max-w-[1160px] px-4 py-8">
                 <Header />
+
+                <MovieSearch />
 
                 <section>
                     <CategoriesTabs
