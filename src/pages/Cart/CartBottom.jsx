@@ -5,11 +5,11 @@ const CartBottom = ({ totalCount, totalPrice }) => {
     <div className="my-10">
       <div className="flex justify-between items-center text-[22px]">
         <div>
-          <span className="text-black">Всего пицц: </span>
+          <span className="text-white">Всего пицц: </span>
           <span className="font-bold">{totalCount} шт.</span>
         </div>
         <div>
-          <span className="text-black">Сумма заказа: </span>
+          <span className="text-white">Сумма заказа: </span>
           <span className="font-bold text-[#FE5F1E]">{totalPrice} ₽</span>
         </div>
       </div>

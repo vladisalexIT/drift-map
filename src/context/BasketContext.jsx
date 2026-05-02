@@ -42,6 +42,15 @@ function basketReducer(state, action) {
             };
         }
 
+        case "REMOVE_ITEM": {
+            return {
+                ...state,
+                itemsBasket: state.itemsBasket.filter(
+                    (item) => item.id !== action.payload
+                ),
+            };
+        }
+
         case "CLEAR_BASKET": {
             return {
                 ...state,
@@ -69,6 +78,10 @@ export function BasketProvider({ children }) {
         dispatch({ type: "DECREASE_ITEM", payload: id });
     }
 
+    function removeItem(id) {
+        dispatch({ type: "REMOVE_ITEM", payload: id });
+    }
+
     function clearBasket() {
         dispatch({ type: "CLEAR_BASKET" });
     }
@@ -80,6 +93,7 @@ export function BasketProvider({ children }) {
                 addItem,
                 clearBasket,
                 decreaseItem,
+                removeItem,
             }}
         >
             {children}

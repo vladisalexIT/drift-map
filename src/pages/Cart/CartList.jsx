@@ -1,6 +1,6 @@
 import CartItem from "./CartItem";
 
-export default function CartList({ items, addItem, decreaseItem }) {
+export default function CartList({ items, addItem, decreaseItem, removeItem }) {
     return (
         items.map((item) => (
             <CartItem
@@ -14,6 +14,7 @@ export default function CartList({ items, addItem, decreaseItem }) {
                 item={item}
                 addItem={addItem}
                 decreaseItem={decreaseItem}
+                removeItem={removeItem}
             />
         ))
     );

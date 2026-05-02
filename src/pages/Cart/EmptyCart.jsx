@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function EmptyCart() {
   return (
     <div className="flex flex-col items-center justify-center text-center w-full h-full py-10">
-      <h2 className="flex items-center gap-3 text-[32px] font-extrabold text-black">
+      <h2 className="flex items-center gap-3 text-[32px] font-extrabold text-white">
         Корзина пустая <span className="text-[36px]">☹️</span>
       </h2>
 

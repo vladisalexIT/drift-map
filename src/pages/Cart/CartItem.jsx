@@ -5,7 +5,7 @@ import meatCelebration from '../../assets/pizza-data/4.jpg';
 import vegeterian from '../../assets/pizza-data/5.jpg';
 
 
-export default function CartItem({ name, image, count, price, size, type, addItem, decreaseItem, item }) {
+export default function CartItem({ name, image, count, price, size, type, addItem, decreaseItem, removeItem, item }) {
   return (
     <div className="flex items-center justify-between border-t border-[#F4F4F4] py-8 w-full h-auto max-h-[624px] mx-auto">
       <div className="flex items-center gap-4 w-[40%]">
@@ -26,7 +26,7 @@ export default function CartItem({ name, image, count, price, size, type, addIte
         {price} ₽
       </div>
 
-      <button className="w-8 h-8 border-2 border-[#D7D7D7] rounded-full text-[#D7D7D7] flex items-center justify-center cursor-pointer">
+      <button onClick={() => removeItem(item.id)} className="w-8 h-8 border-2 border-[#D7D7D7] rounded-full text-[#D7D7D7] flex items-center justify-center cursor-pointer">
         ✕
       </button>
     </div>
