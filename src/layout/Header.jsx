@@ -23,9 +23,9 @@ export default function Header() {
         <img src={logo} alt="Logo" />
         <div>
           <h1 className="font-extrabold text-2xl tracking-tighter text-[#f5e2e2] uppercase">
-            REACT PIZZA
+            CINEMA PIZZA
           </h1>
-          <p className="font-normal text-[16px] text-[#7b7b7b]">Самая реактивная пицца</p>
+          <p className="font-normal text-[16px] text-[#7b7b7b]">Самая киношная пицца</p>
         </div>
       </Link>
 

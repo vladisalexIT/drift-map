@@ -8,6 +8,7 @@ import SortDropdown from "./ui/SortDropdown";
 import ProductsGrid from "./ui/ProductsGrid";
 import SpaceBackground from "../../components/SpaceBackground";
 import MovieSearch from "../../components/MovieSearch";
+import MovieSidePosters from "../../components/MovieSidePosters";
 
 export default function HomePage() {
     const { addItem, basket } = useBasket();
@@ -28,6 +29,7 @@ export default function HomePage() {
     return (
         <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
             <SpaceBackground />
+            <MovieSidePosters />
 
             <div className="relative z-10 mx-auto max-w-[1160px] px-4 py-8">
                 <Header />
