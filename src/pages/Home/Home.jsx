@@ -13,8 +13,6 @@ import MovieSidePosters from "../../components/MovieSidePosters";
 import StickyCart from "../../components/StickyCart";
 
 
-
-
 export default function HomePage() {
     const { addItem, basket } = useBasket();
     const [activeCategory, setActiveCategory] = useState(0);
@@ -36,7 +34,7 @@ export default function HomePage() {
             <SpaceBackground />
 
             <StickyCart />
-            
+
             <div className="relative z-10">
 
                 <MovieSidePosters />
