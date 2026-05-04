@@ -1,4 +1,4 @@
-import Header from "../../layout/Header";
+import Header from "../../layout/header/Header";
 import CartHeader from "./CartHeader";
 import CartBottom from "./CartBottom";
 import CartList from "./CartList";

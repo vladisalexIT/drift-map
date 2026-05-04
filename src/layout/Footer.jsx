@@ -1,17 +1,14 @@
 import { Link } from "react-router";
+import Logo from "../components/Logo";
 export default function Footer() {
     return (
         <footer className="relative mt-16 border-t border-white/10 bg-white/5 backdrop-blur-md">
             <div className="mx-auto max-w-[1160px] px-4 py-10">
                 <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-                    <div>
-                        <h3 className="mb-4 text-xl font-bold text-white">
-                            CinemaPizza
-                        </h3>
+                    <div className="flex flex-col justify-between" >
+                        <Logo />
                         <p className="max-w-sm text-sm leading-6 text-white/70">
-                            Уютное сочетание кинонастроения и вкусной пиццы. Выбирайте
-                            любимые вкусы, следите за новинками и наслаждайтесь атмосферой
-                            дома.
+                            Уютное сочетание кинонастроения и вкусной пиццы. 
                         </p>
                     </div>
 

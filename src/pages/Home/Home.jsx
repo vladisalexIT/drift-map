@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { products } from "../../mock/products";
-import Header from "../../layout/Header";
+import useProducts from "../../hooks/useProducts";
+import Header from "../../layout/header/Header";
 import Footer from "../../layout/Footer";
 import { useBasket } from "../../context/BasketContext";
 import { categories, sortOptions } from "../../shared/config/pizzaFilters";
@@ -14,6 +14,7 @@ import StickyCart from "../../components/StickyCart";
 
 
 export default function HomePage() {
+    const products = useProducts();
     const { addItem, basket } = useBasket();
     const [activeCategory, setActiveCategory] = useState(0);
     const [activeSort, setActiveSort] = useState(0);

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Header from "../layout/Header";
+import Header from "../layout/header/Header";
 import Footer from "../layout/Footer";
 import SpaceBackground from "../components/SpaceBackground";
 import MovieSidePosters from "../components/MovieSidePosters";
