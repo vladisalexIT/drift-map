@@ -1,7 +1,8 @@
 import { useState } from "react";
 import useProducts from "../../hooks/useProducts";
+import useFilteredProducts from "../../hooks/useFilteredProducts";
 import Header from "../../layout/header/Header";
-import Footer from "../../layout/Footer";
+import Footer from "../../layout/footer/Footer";
 import { useBasket } from "../../context/BasketContext";
 import { categories, sortOptions } from "../../shared/config/pizzaFilters";
 import CategoriesTabs from "./ui/CategoriesTabs";
@@ -12,23 +13,17 @@ import MovieSearch from "../../components/MovieSearch";
 import MovieSidePosters from "../../components/MovieSidePosters";
 import StickyCart from "../../components/StickyCart";
 
-
 export default function HomePage() {
     const products = useProducts();
     const { addItem, basket } = useBasket();
     const [activeCategory, setActiveCategory] = useState(0);
     const [activeSort, setActiveSort] = useState(0);
 
-    const filteredProducts = products
-        .filter(
-            (product) =>
-                activeCategory === 0 || product.category === categories[activeCategory]
-        )
-        .sort((a, b) => {
-            const prop = sortOptions[activeSort].property;
-            if (prop === "name") return a[prop].localeCompare(b[prop]);
-            return b[prop] - a[prop];
-        });
+    const filteredProducts = useFilteredProducts(
+        products,
+        activeCategory,
+        activeSort
+    );
 
     return (
         <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
