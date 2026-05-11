@@ -63,7 +63,7 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
         <div className="flex p-[2rem]">
           <div className="relative min-h-[360px] lg:min-h-full">
             <img
-              src={trip.image}
+              src={`${import.meta.env.BASE_URL}${trip.image}`}
               alt={trip.title}
               className="h-full w-full object-cover"
             />

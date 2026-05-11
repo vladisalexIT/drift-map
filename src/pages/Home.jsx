@@ -25,7 +25,7 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
         className="group relative block aspect-[4/5] w-full overflow-hidden"
       >
         <img
-          src={trip.image}
+          src={`${import.meta.env.BASE_URL}${trip.image}`}
           alt={trip.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />

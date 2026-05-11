@@ -24,7 +24,7 @@ export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
       {/* Изображение */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={trip.image}
+          src={`${import.meta.env.BASE_URL}${trip.image}`}
           alt={trip.title}
           className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
         />
