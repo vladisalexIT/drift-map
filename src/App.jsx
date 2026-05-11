@@ -1,22 +1,46 @@
-import "./App.css";
-import { Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
-import HomePage from "./pages/Home/Home";
-import Cart from "./pages/Cart/Cart";
-import LoginSuccessPage from "./pages/LoginSuccessPage";
+import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Header } from './layout/header/Header';
+import { Home } from './pages/Home';
+import { TripDetailsPage } from './pages/TripDetailsPage';
+import { FavoritesPage } from './pages/FavoritesPage';
 
-function App() {
+export default function App() {
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('favorites');
+    return saved ? JSON.parse(saved) : [];
+  });
 
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (trip) => {
+    setFavorites((prev) =>
+      prev.some((item) => item.id === trip.id)
+        ? prev.filter((item) => item.id !== trip.id)
+        : [...prev, trip]
+    );
+  };
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login-success" element={<LoginSuccessPage />} />
-      </Routes>
-    </>
-  );
-}
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f8fafc_38%,_#f4f4f5_100%)] text-zinc-900">
+      <Header favoritesCount={favorites.length} />
 
-export default App;
+      <Routes>
+        <Route
+          path="/"
+          element={<Home favorites={favorites} onToggleFavorite={toggleFavorite} />}
+        />
+        <Route
+          path="/trip/:id"
+          element={<TripDetailsPage favorites={favorites} onToggleFavorite={toggleFavorite} />}
+        />
+        <Route
+          path="/favorites"
+          element={<FavoritesPage favorites={favorites} onToggleFavorite={toggleFavorite} />}
+        />
+      </Routes>
+    </div>
+  );
+};

@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/react-pizza-v2/',
+  base: '/drift-map/',
   optimizeDeps: {
     include: ['**/*.jsx'],
   },
