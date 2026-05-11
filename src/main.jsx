@@ -8,7 +8,7 @@ import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter basename="/react-pizza-v2">
+    <BrowserRouter basename="/drift-map">
       <FavoritesProvider>
         <App />
       </FavoritesProvider>
