@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "title": "Соленая свежесть Алгарве",
+    "country": "Португалия",
+    "type": "Пляжный",
+    "price": 850,
+    "duration": "7 дней",
+    "rating": 4.9,
+    "image": "/react-pizza-v2/images/algarve-beach.jpg",
+    "description": "Мягкий песок, бирюзовая вода и аутентичные португальские деревушки."
+  },
+  {
+    "id": 2,
+    "title": "Медленный Рим",
+    "country": "Италия",
+    "type": "Городской",
+    "price": 620,
+    "duration": "4 дня",
+    "rating": 4.8,
+    "image": "/react-pizza-v2/images/rome-city.jpg",
+    "description": "Исследуйте скрытые дворики и наслаждайтесь лучшим эспрессо вдали от толп."
+  },
+  {
+    "id": 3,
+    "title": "Островной ретрит Бали",
+    "country": "Индонезия",
+    "type": "Пляжный",
+    "price": 940,
+    "duration": "8 дней",
+    "rating": 4.9,
+    "image": "/react-pizza-v2/images/bali-retreat.jpg",
+    "description": "Тропические пляжи, рисовые террасы и спокойные закаты у океана."
+  },
+  {
+    "id": 4,
+    "title": "Уикенд в Копенгагене",
+    "country": "Дания",
+    "type": "Городской",
+    "price": 710,
+    "duration": "3 дня",
+    "rating": 4.7,
+    "image": "/react-pizza-v2/images/copenhagen-weekend.webp",
+    "description": "Скандинавский дизайн, набережные и атмосферные кафе в центре города."
+  },
+  {
+    "id": 5,
+    "title": "Горное дыхание Альп",
+    "country": "Швейцария",
+    "type": "Природный",
+    "price": 1200,
+    "duration": "6 дней",
+    "rating": 5.0,
+    "image": "/react-pizza-v2/images/alps-mountains.webp",
+    "description": "Чистый воздух, озёра и панорамные маршруты среди величественных гор."
+  },
+  {
+    "id": 6,
+    "title": "Лесной маршрут по Словении",
+    "country": "Словения",
+    "type": "Природный",
+    "price": 680,
+    "duration": "5 дней",
+    "rating": 4.8,
+    "image": "/react-pizza-v2/images/slovenia-forest.jpg",
+    "description": "Озёра, леса и тихие маршруты для тех, кто любит природу."
+  },
+  {
+    "id": 7,
+    "title": "Приключение в Исландии",
+    "country": "Исландия",
+    "type": "Активный",
+    "price": 1450,
+    "duration": "7 дней",
+    "rating": 4.9,
+    "image": "/react-pizza-v2/images/iceland-adventure.webp",
+    "description": "Водопады, вулканические пейзажи и ощущение настоящего приключения."
+  },
+  {
+    "id": 8,
+    "title": "Тихий отдых на озере Комо",
+    "country": "Италия",
+    "type": "Wellness",
+    "price": 1100,
+    "duration": "5 дней",
+    "rating": 4.9,
+    "image": "/react-pizza-v2/images/lake-como-wellness.webp",
+    "description": "Спокойствие, виллы у воды и размеренный отдых в красивом месте."
+  },
+  {
+    "id": 9,
+    "title": "Золотые холмы Тосканы",
+    "country": "Италия",
+    "type": "Природный",
+    "price": 780,
+    "duration": "6 дней",
+    "rating": 4.8,
+    "image": "/react-pizza-v2/images/tuscany-hills.jpg",
+    "description": "Пейзажи, виноградники и медленные прогулки по сельской Италии."
+  },
+  {
+    "id": 10,
+    "title": "Ночной Бангкок",
+    "country": "Таиланд",
+    "type": "Городской",
+    "price": 560,
+    "duration": "4 дня",
+    "rating": 4.6,
+    "image": "/react-pizza-v2/images/bangkok-night.jpg",
+    "description": "Небоскрёбы, рынки, уличная еда и яркая ночная жизнь."
+  }
+]
