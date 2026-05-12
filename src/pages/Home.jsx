@@ -11,6 +11,7 @@ import {
   Clock3,
   Heart,
 } from 'lucide-react';
+import { SiInstagram, SiFacebook, SiYoutube, SiTelegram } from 'react-icons/si';
 import { TripCard } from '../components/TripCard';
 import { Link } from 'react-router-dom';
 import Hero from '../assets/hero.jpg';
@@ -136,22 +137,28 @@ const Footer = () => {
               Следите за нами
             </h4>
             <div className="flex gap-3">
-              <a
-                href="#"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-                aria-label="Instagram"
-              />
-              <a
-                href="#"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-                aria-label="Facebook"
-              />
-              <a
-                href="#"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-                aria-label="Youtube"
-              />
-            </div>
+  <a
+    href="#"
+    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+    aria-label="Instagram"
+  >
+    <SiInstagram size={18} />
+  </a>
+  <a
+    href="#"
+    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+    aria-label="Facebook"
+  >
+    <SiFacebook size={18} />
+  </a>
+  <a
+    href="#"
+    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+    aria-label="Youtube"
+  >
+    <SiYoutube size={18} />
+  </a>
+</div>
           </div>
         </div>
 
@@ -432,7 +439,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   <button
                     key={type}
                     onClick={() => setTypeFilter(type)}
-                    className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${typeFilter === type
+                    className={`cursor-pointer rounded-full px-5 py-2.5 text-sm font-semibold transition-[background-color,color,shadow] duration-200 ${typeFilter === type
                       ? 'bg-zinc-900 text-white shadow-lg shadow-slate-200'
                       : 'text-zinc-500 hover:bg-sky-50 hover:text-zinc-900'
                       }`}
