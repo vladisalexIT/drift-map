@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 
+
 export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
   const { id } = useParams();
   const [trips, setTrips] = useState([]);
@@ -30,7 +31,6 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
   if (!trip) return <div className="py-20 text-center">Тур не найден</div>;
 
   return (
-    /* Фон страницы сделал чуть темнее, чтобы карточка выделялась */
     <div className="min-h-screen bg-slate-50">
       <main className="mx-auto max-w-7xl px-4 pt-2 pb-12 sm:px-6 lg:px-8">
         <Link
@@ -42,7 +42,6 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
 
         <div className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-xl">
           <div className="flex flex-col lg:flex-row">
-            {/* Изображение */}
             <div className="relative min-h-[300px] lg:w-1/2">
               <img
                 src={`${import.meta.env.BASE_URL}${trip.image}`}
@@ -63,7 +62,6 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
               </div>
             </div>
 
-            {/* Контент */}
             <div className="flex flex-col p-8 lg:w-1/2 lg:p-12">
               <div className="flex items-start justify-between">
                 <div>
@@ -71,7 +69,6 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
                   <p className="mt-1 text-4xl font-black text-zinc-900">${trip.price}</p>
                 </div>
 
-                {/* Кнопка Избранное в виде сердечка */}
                 <button
                   onClick={() => onToggleFavorite(trip)}
                   className={`cursor-pointer flex h-12 w-12 items-center justify-center rounded-full border transition-all ${isFavorite
@@ -99,7 +96,6 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
                 <p className="mt-3 leading-relaxed text-zinc-600">{trip.description}</p>
               </div>
 
-              {/* Смысловой блок почему это направление удобно */}
               <div className="mt-8 rounded-3xl bg-amber-50/50 border border-amber-100 p-6">
                 <h3 className="text-base font-bold text-amber-900">Особенности маршрута</h3>
                 <div className="mt-4 space-y-4 text-sm text-amber-900/80">

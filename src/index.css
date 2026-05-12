@@ -1,27 +1,20 @@
 @import "tailwindcss";
 
-@keyframes driftSlow {
-        0% { transform: translate3d(0, 0, 0) scale(1); }
-        25% { transform: translate3d(18px, -12px, 0) scale(1.03); }
-        50% { transform: translate3d(-14px, 16px, 0) scale(1.06); }
-        75% { transform: translate3d(10px, 8px, 0) scale(1.02); }
-        100% { transform: translate3d(0, 0, 0) scale(1); }
-      }
+.swiper-pagination {
+  position: static !important;
+  margin-top: 10px;
+}
 
-      @keyframes hueShift {
-        0% { filter: hue-rotate(0deg) saturate(1.25); }
-        50% { filter: hue-rotate(18deg) saturate(1.5); }
-        100% { filter: hue-rotate(0deg) saturate(1.25); }
-      }
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: rgba(24, 24, 27, 0.25);
+  opacity: 1;
+}
 
-      @keyframes floatUpDown {
-        0% { transform: translateY(0px); opacity: 0.72; }
-        50% { transform: translateY(-10px); opacity: 1; }
-        100% { transform: translateY(0px); opacity: 0.72; }
-      }
-
-      @keyframes routePulse {
-        0% { stroke-dashoffset: 0; opacity: 0.5; }
-        50% { stroke-dashoffset: -80; opacity: 0.9; }
-        100% { stroke-dashoffset: -160; opacity: 0.5; }
-      }
+.swiper-pagination-bullet-active {
+  width: 22px;
+  border-radius: 999px;
+  background: #18181b;
+}
+      

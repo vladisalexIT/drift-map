@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { TripCard } from '../components/TripCard';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 export const FavoritesPage = ({ favorites = [], onToggleFavorite }) => {
   return (
     
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <BackgroundDecorations />
       <div className="mb-8">
         <p className="text-sm uppercase tracking-[0.28em] text-zinc-400">Saved trips</p>
         <h2 className="mt-2 text-4xl font-semibold tracking-tight text-zinc-900">

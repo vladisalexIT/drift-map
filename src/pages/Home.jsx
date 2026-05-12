@@ -10,15 +10,21 @@ import {
   Compass,
   Clock3,
   Heart,
+  ShieldCheck,
+  BadgePercent,
+  Headphones,
+  WalletCards,
 } from 'lucide-react';
 import { SiInstagram, SiFacebook, SiYoutube, SiTelegram } from 'react-icons/si';
 import { TripCard } from '../components/TripCard';
 import { Link } from 'react-router-dom';
 import Hero from '../assets/hero.jpg';
+import BackgroundDecorations from '../components/BackgroundDecorations';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/pagination';
 
 const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
   return (
@@ -104,15 +110,19 @@ const Footer = () => {
       <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr]">
           <div>
-            <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-zinc-900 text-white shadow-lg">
-                <Plane size={18} className="rotate-[-20deg]" />
+            <Link to="/" className="group flex items-center gap-3 mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-900 text-xl text-white shadow-lg shadow-zinc-200 transition group-hover:scale-105">
+                ✈
               </div>
-              <div>
-                <div className="text-lg font-bold text-zinc-900">DriftMap</div>
-                <div className="text-sm text-zinc-500">Планировщик путешествий</div>
+              <div className="hidden sm:block">
+                <p className="text-[12px] uppercase tracking-[0.28em] text-zinc-400 leading-tight font-semibold">
+                  DriftMap
+                </p>
+                <h1 className="text-base font-semibold text-zinc-900">
+                  Планировщик путешествий
+                </h1>
               </div>
-            </div>
+            </Link>
 
             <p className="max-w-md text-sm leading-6 text-zinc-600">
               Подбирайте направления, сравнивайте туры и сохраняйте вдохновляющие
@@ -137,28 +147,28 @@ const Footer = () => {
               Следите за нами
             </h4>
             <div className="flex gap-3">
-  <a
-    href="#"
-    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-    aria-label="Instagram"
-  >
-    <SiInstagram size={18} />
-  </a>
-  <a
-    href="#"
-    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-    aria-label="Facebook"
-  >
-    <SiFacebook size={18} />
-  </a>
-  <a
-    href="#"
-    className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
-    aria-label="Youtube"
-  >
-    <SiYoutube size={18} />
-  </a>
-</div>
+              <a
+                href="#"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+                aria-label="Instagram"
+              >
+                <SiInstagram size={18} />
+              </a>
+              <a
+                href="#"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+                aria-label="Facebook"
+              >
+                <SiFacebook size={18} />
+              </a>
+              <a
+                href="#"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
+                aria-label="Youtube"
+              >
+                <SiYoutube size={18} />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -271,67 +281,53 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   };
 
 
+  const perks = [
+    {
+      id: 1,
+      title: 'Скидки до 15% на впечатления',
+      description:
+        'Подбираем специальные предложения на экскурсии, активности и отдых в популярных направлениях.',
+      buttonText: 'Подробнее',
+      icon: BadgePercent,
+      accent: 'from-orange-500 via-orange-500 to-rose-500',
+      glow: 'bg-orange-300/30',
+    },
+    {
+      id: 2,
+      title: 'Проверенные маршруты и туры',
+      description:
+        'Только понятные направления, удобная логистика и варианты отдыха, которые легко сравнить между собой.',
+      buttonText: 'Смотреть',
+      icon: ShieldCheck,
+      accent: 'from-sky-500 via-cyan-500 to-blue-500',
+      glow: 'bg-sky-300/30',
+    },
+    {
+      id: 3,
+      title: 'Поддержка на каждом этапе поездки',
+      description:
+        'От выбора направления до финального бронирования — всё в одном удобном сценарии.',
+      buttonText: 'Узнать',
+      icon: Headphones,
+      accent: 'from-emerald-500 via-teal-500 to-cyan-500',
+      glow: 'bg-emerald-300/30',
+    },
+    {
+      id: 4,
+      title: 'Удобное сравнение цен и форматов',
+      description:
+        'Сохраняйте варианты, сравнивайте детали поездки и выбирайте лучшее предложение без лишней суеты.',
+      buttonText: 'Открыть',
+      icon: WalletCards,
+      accent: 'from-violet-500 via-fuchsia-500 to-pink-500',
+      glow: 'bg-fuchsia-300/30',
+    },
+  ];
+
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eaf4fb] text-zinc-900">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f5fbff_0%,#e6f4fb_45%,#ddf0f8_100%)]" />
-
-        <svg className="absolute inset-0 h-full w-full opacity-45" viewBox="0 0 1440 1200" fill="none">
-          <path
-            d="M-40 180 C180 60, 360 300, 580 180 S980 60, 1220 180 S1540 300, 1760 180"
-            stroke="rgba(15,23,42,0.38)"
-            strokeWidth="3"
-            strokeDasharray="14 12"
-            strokeLinecap="round"
-          />
-          <path
-            d="M120 -20 C260 120, 320 240, 480 340 S780 520, 940 640 S1220 900, 1380 1080"
-            stroke="rgba(15,23,42,0.28)"
-            strokeWidth="3"
-            strokeDasharray="12 14"
-            strokeLinecap="round"
-          />
-          <path
-            d="M150 980 C300 860, 430 820, 620 860 S980 980, 1220 900"
-            stroke="rgba(15,23,42,0.3)"
-            strokeWidth="3"
-            strokeDasharray="13 11"
-            strokeLinecap="round"
-          />
-          <path
-            d="M240 120 C420 220, 560 90, 760 170 S1100 260, 1340 140"
-            stroke="rgba(14,165,233,0.32)"
-            strokeWidth="2.5"
-            strokeDasharray="8 10"
-            strokeLinecap="round"
-          />
-        </svg>
-
-        <div className="absolute left-[8%] top-[14%] rounded-full bg-sky-300/45 p-5 text-sky-900 shadow-[0_10px_30px_rgba(14,165,233,0.25)] ring-1 ring-white/50">
-          <Plane size={30} />
-        </div>
-
-        <div className="absolute right-[12%] top-[28%] rounded-full bg-white/85 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
-          <MapPin size={30} />
-        </div>
-
-        <div className="absolute left-[16%] bottom-[20%] rounded-full bg-cyan-300/40 p-5 text-cyan-950 shadow-[0_10px_30px_rgba(34,211,238,0.22)] ring-1 ring-white/50">
-          <Compass size={30} />
-        </div>
-
-        <div className="absolute right-[22%] bottom-[24%] rounded-full bg-white/85 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
-          <Route size={30} />
-        </div>
-
-        <div className="absolute left-[45%] top-[50%] rounded-full bg-white/80 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
-          <Clock3 size={30} />
-        </div>
-
-        <div className="absolute -left-24 top-16 h-[28rem] w-[28rem] rounded-full bg-sky-400/35 blur-3xl animate-pulse" />
-        <div className="absolute right-[-90px] top-40 h-[34rem] w-[34rem] rounded-full bg-cyan-400/28 blur-3xl animate-pulse [animation-delay:1.2s]" />
-        <div className="absolute left-[18%] bottom-[-120px] h-[30rem] w-[30rem] rounded-full bg-teal-300/24 blur-3xl animate-pulse [animation-delay:2.4s]" />
-        <div className="absolute right-[36%] top-[58%] h-[18rem] w-[18rem] rounded-full bg-blue-300/20 blur-3xl animate-pulse [animation-delay:3.2s]" />
-      </div>
+      <BackgroundDecorations />
 
       <section className="relative h-[65vh] min-h-[480px] w-full overflow-hidden bg-zinc-900">
         <div className="absolute inset-0">
@@ -554,6 +550,66 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
             )}
           </>
         )}
+
+        <div className="mt-20">
+          <div className="overflow-hidden rounded-[36px] cursor-pointer">
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              slidesPerView={1}
+              spaceBetween={16}
+              loop
+              autoplay={{
+                delay: 4500,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+              }}
+            >
+              {perks.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <SwiperSlide key={item.id}>
+                    <div
+                      className={`relative overflow-hidden rounded-[30px] bg-gradient-to-r ${item.accent} min-h-[260px] px-6 py-8 text-white sm:px-10 sm:py-10 lg:min-h-[300px] lg:px-14`}
+                    >
+                      <div className={`absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl ${item.glow}`} />
+                      <div className="absolute bottom-0 right-0 translate-x-[12%] translate-y-[8%] opacity-15">
+                        <Icon size={220} strokeWidth={1.2} />
+                      </div>
+
+                      <div className="relative z-10 flex h-full max-w-xl flex-col justify-between">
+                        <div>
+                          <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/16 backdrop-blur-md ring-1 ring-white/25">
+                            <Icon size={26} />
+                          </div>
+
+                          <h3 className="max-w-lg text-3xl font-bold leading-tight sm:text-4xl">
+                            {item.title}
+                          </h3>
+
+                          <p className="mt-4 max-w-xl text-sm leading-6 text-white/85 sm:text-base">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        <div className="mt-8">
+                          <button
+                            type="button"
+                            className="rounded-2xl bg-white/20 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md ring-1 ring-white/30 transition hover:bg-white/30"
+                          >
+                            {item.buttonText}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+        </div>
       </section>
 
       <Footer />
