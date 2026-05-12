@@ -1,22 +1,23 @@
 import { Link, NavLink } from 'react-router-dom';
+import { Heart, User, Map } from 'lucide-react';
 
 export const Header = ({ favoritesCount = 0 }) => {
   const linkClass = ({ isActive }) =>
-    `rounded-full px-4 py-2 text-sm font-medium transition ${
+    `flex items-center gap-2 rounded-2xl px-4 py-2.5 text-base font-medium transition-all duration-200 ${
       isActive
         ? 'bg-zinc-900 text-white shadow-sm'
-        : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+        : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-900'
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/60 bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/" className="group flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-900 text-white shadow-md shadow-zinc-200 transition group-hover:scale-105">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-900 text-xl text-white shadow-lg shadow-zinc-200 transition group-hover:scale-105">
             ✈
           </div>
-          <div>
-            <p className="text-[14px] uppercase tracking-[0.28em] text-zinc-400">
+          <div className="hidden sm:block">
+            <p className="text-[12px] uppercase tracking-[0.28em] text-zinc-400 leading-tight font-semibold">
               DriftMap
             </p>
             <h1 className="text-base font-semibold text-zinc-900">
@@ -25,18 +26,30 @@ export const Header = ({ favoritesCount = 0 }) => {
           </div>
         </Link>
 
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-3">
           <NavLink to="/" className={linkClass}>
-            Направления
+            <Map size={20} strokeWidth={2} />
+            <span>Направления</span>
           </NavLink>
+
           <NavLink to="/favorites" className={linkClass}>
-            Избранное
-            {favoritesCount > 0 && (
-              <span className="ml-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-zinc-900">
-                {favoritesCount}
-              </span>
-            )}
+            <div className="flex items-center gap-2 border-none p-0 bg-transparent">
+              <Heart size={20} strokeWidth={2} />
+              <div className="relative">
+                <span>Мои планы</span>
+                {favoritesCount > 0 && (
+                  <span className="absolute -right-4 -top-4 flex h-6 min-w-[24px] items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-bold leading-none text-white shadow-sm">
+                    {favoritesCount}
+                  </span>
+                )}
+              </div>
+            </div>
           </NavLink>
+
+          <button className="flex items-center gap-2 rounded-2xl px-4 py-2.5 text-base font-medium text-zinc-600 transition-all hover:bg-zinc-100 hover:text-zinc-900">
+            <User size={20} strokeWidth={2} />
+            <span>Войти</span>
+          </button>
         </nav>
       </div>
     </header>

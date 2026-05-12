@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Search,
   Sparkles,
@@ -6,11 +6,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Plane,
-  
+  Route,
+  Compass,
+  Clock3,
+  Heart,
 } from 'lucide-react';
 import { TripCard } from '../components/TripCard';
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
 import Hero from '../assets/hero.jpg';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -43,11 +45,10 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
             e.stopPropagation();
             onToggleFavorite(trip);
           }}
-          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${
-            isFavorite
-              ? 'bg-orange-300 text-white shadow-lg'
-              : 'bg-white/90 text-zinc-900 hover:bg-white'
-          }`}
+          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${isFavorite
+            ? 'bg-orange-300 text-white shadow-lg'
+            : 'bg-white/90 text-zinc-900 hover:bg-white'
+            }`}
         >
           <Heart
             size={18}
@@ -81,20 +82,20 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
 
 const Footer = () => {
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-zinc-200/70 bg-[#F6F0E7]">
+    <footer className="relative mt-24 overflow-hidden border-t border-white/40 bg-white/30 backdrop-blur-sm">
       <div className="absolute inset-0">
-        <div className="absolute -left-16 top-10 h-48 w-48 rounded-full bg-orange-200/25 blur-3xl" />
-        <div className="absolute right-0 top-24 h-64 w-64 rounded-full bg-amber-200/25 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.75),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.45),transparent_30%)]" />
+        <div className="absolute -left-16 top-10 h-48 w-48 rounded-full bg-sky-200/25 blur-3xl" />
+        <div className="absolute right-0 top-24 h-64 w-64 rounded-full bg-cyan-200/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.78),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.42),transparent_30%)]" />
         <svg
-          className="absolute inset-x-0 bottom-0 h-24 w-full opacity-[0.12]"
+          className="absolute inset-x-0 bottom-0 h-24 w-full opacity-[0.1]"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
           <path
             d="M0,64 C150,110 300,20 450,64 C600,108 750,18 900,64 C1050,110 1150,34 1200,64 L1200,120 L0,120 Z"
             fill="currentColor"
-            className="text-orange-900"
+            className="text-sky-950"
           />
         </svg>
       </div>
@@ -108,13 +109,13 @@ const Footer = () => {
               </div>
               <div>
                 <div className="text-lg font-bold text-zinc-900">DriftMap</div>
-                <div className="text-sm text-zinc-500">Путешествия с характером</div>
+                <div className="text-sm text-zinc-500">Планировщик путешествий</div>
               </div>
             </div>
 
             <p className="max-w-md text-sm leading-6 text-zinc-600">
               Подбирайте направления, сравнивайте туры и сохраняйте вдохновляющие
-              варианты в избранное. Ненавязчиво, удобно и красиво.
+              варианты в избранное. Все маршруты проверены экспертами.
             </p>
           </div>
 
@@ -139,23 +140,17 @@ const Footer = () => {
                 href="#"
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
                 aria-label="Instagram"
-              >
-                {/* <Instagram size={18} /> */}
-              </a>
+              />
               <a
                 href="#"
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
                 aria-label="Facebook"
-              >
-                {/* <Facebook size={18} /> */}
-              </a>
+              />
               <a
                 href="#"
                 className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white hover:text-zinc-900"
                 aria-label="Youtube"
-              >
-                {/* <Youtube size={18} /> */}
-              </a>
+              />
             </div>
           </div>
         </div>
@@ -176,6 +171,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const heroSwiperRef = useRef(null);
 
   useEffect(() => {
     const loadTrips = async () => {
@@ -222,7 +218,6 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   }, [typeFilter]);
 
   const itemsPerPage = 9;
-
   const totalPages = Math.max(1, Math.ceil(filteredTrips.length / itemsPerPage));
 
   const paginatedTrips = useMemo(() => {
@@ -268,44 +263,67 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#F8F4EE] text-zinc-900">
+    <main className="relative min-h-screen overflow-hidden bg-[#eaf4fb] text-zinc-900">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top_left,rgba(251,239,213,0.95),transparent_38%),radial-gradient(circle_at_top_right,rgba(248,226,192,0.55),transparent_34%),linear-gradient(to_bottom,rgba(245,233,219,0.95),rgba(248,244,238,0.2))]" />
-        <div className="absolute left-0 top-40 h-72 w-72 rounded-full bg-amber-200/20 blur-3xl" />
-        <div className="absolute right-0 top-80 h-96 w-96 rounded-full bg-orange-200/15 blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.22]"
-          style={{
-            backgroundImage:
-              'radial-gradient(rgba(120,93,50,0.12) 1px, transparent 1px), radial-gradient(rgba(120,93,50,0.08) 1px, transparent 1px)',
-            backgroundSize: '42px 42px, 84px 84px',
-            backgroundPosition: '0 0, 21px 21px',
-          }}
-        />
-        <svg className="absolute inset-0 h-full w-full opacity-[0.12]" viewBox="0 0 1440 1200" fill="none">
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#f5fbff_0%,#e6f4fb_45%,#ddf0f8_100%)]" />
+
+        <svg className="absolute inset-0 h-full w-full opacity-45" viewBox="0 0 1440 1200" fill="none">
           <path
-            d="M-40 180 C 220 80, 360 260, 560 180 C 760 100, 900 300, 1100 210 C 1250 145, 1360 180, 1500 120"
-            stroke="rgba(120,93,50,0.55)"
-            strokeWidth="2"
+            d="M-40 180 C180 60, 360 300, 580 180 S980 60, 1220 180 S1540 300, 1760 180"
+            stroke="rgba(15,23,42,0.38)"
+            strokeWidth="3"
+            strokeDasharray="14 12"
+            strokeLinecap="round"
+          />
+          <path
+            d="M120 -20 C260 120, 320 240, 480 340 S780 520, 940 640 S1220 900, 1380 1080"
+            stroke="rgba(15,23,42,0.28)"
+            strokeWidth="3"
+            strokeDasharray="12 14"
+            strokeLinecap="round"
+          />
+          <path
+            d="M150 980 C300 860, 430 820, 620 860 S980 980, 1220 900"
+            stroke="rgba(15,23,42,0.3)"
+            strokeWidth="3"
+            strokeDasharray="13 11"
+            strokeLinecap="round"
+          />
+          <path
+            d="M240 120 C420 220, 560 90, 760 170 S1100 260, 1340 140"
+            stroke="rgba(14,165,233,0.32)"
+            strokeWidth="2.5"
             strokeDasharray="8 10"
             strokeLinecap="round"
           />
-          <path
-            d="M-60 520 C 160 420, 320 620, 520 520 C 720 420, 900 640, 1120 540 C 1260 475, 1360 500, 1500 430"
-            stroke="rgba(120,93,50,0.45)"
-            strokeWidth="2"
-            strokeDasharray="6 12"
-            strokeLinecap="round"
-          />
-          <path
-            d="M-80 900 C 180 800, 360 980, 560 900 C 760 820, 920 1020, 1140 920 C 1280 860, 1380 890, 1520 830"
-            stroke="rgba(120,93,50,0.38)"
-            strokeWidth="2"
-            strokeDasharray="7 11"
-            strokeLinecap="round"
-          />
         </svg>
+
+        <div className="absolute left-[8%] top-[14%] rounded-full bg-sky-300/45 p-5 text-sky-900 shadow-[0_10px_30px_rgba(14,165,233,0.25)] ring-1 ring-white/50">
+          <Plane size={30} />
+        </div>
+
+        <div className="absolute right-[12%] top-[28%] rounded-full bg-white/85 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
+          <MapPin size={30} />
+        </div>
+
+        <div className="absolute left-[16%] bottom-[20%] rounded-full bg-cyan-300/40 p-5 text-cyan-950 shadow-[0_10px_30px_rgba(34,211,238,0.22)] ring-1 ring-white/50">
+          <Compass size={30} />
+        </div>
+
+        <div className="absolute right-[22%] bottom-[24%] rounded-full bg-white/85 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
+          <Route size={30} />
+        </div>
+
+        <div className="absolute left-[45%] top-[50%] rounded-full bg-white/80 p-5 text-zinc-800 shadow-[0_12px_28px_rgba(15,23,42,0.12)] ring-1 ring-sky-100">
+          <Clock3 size={30} />
+        </div>
+
+        <div className="absolute -left-24 top-16 h-[28rem] w-[28rem] rounded-full bg-sky-400/35 blur-3xl animate-pulse" />
+        <div className="absolute right-[-90px] top-40 h-[34rem] w-[34rem] rounded-full bg-cyan-400/28 blur-3xl animate-pulse [animation-delay:1.2s]" />
+        <div className="absolute left-[18%] bottom-[-120px] h-[30rem] w-[30rem] rounded-full bg-teal-300/24 blur-3xl animate-pulse [animation-delay:2.4s]" />
+        <div className="absolute right-[36%] top-[58%] h-[18rem] w-[18rem] rounded-full bg-blue-300/20 blur-3xl animate-pulse [animation-delay:3.2s]" />
       </div>
 
       <section className="relative h-[65vh] min-h-[480px] w-full overflow-hidden bg-zinc-900">
@@ -338,27 +356,52 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
             </div>
 
             <div className="relative hidden lg:block lg:-translate-y-6">
-              <div className="rounded-[28px] bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/20">
-                <Swiper
-                  modules={[Autoplay]}
-                  spaceBetween={16}
-                  slidesPerView={1}
-                  loop
-                  autoplay={{
-                    delay: 6200,
-                    disableOnInteraction: false,
-                  }}
-                >
-                  {trips.slice(0, 3).map((trip) => (
-                    <SwiperSlide key={trip.id}>
-                      <HeroTripCard
-                        trip={trip}
-                        isFavorite={favorites.some((item) => item.id === trip.id)}
-                        onToggleFavorite={onToggleFavorite}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+              <div className="relative">
+                <div className="rounded-[28px] bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/20">
+                  <Swiper
+                    modules={[Autoplay]}
+                    spaceBetween={16}
+                    slidesPerView={1}
+                    loop
+                    autoplay={{
+                      delay: 6200,
+                      disableOnInteraction: false,
+                    }}
+                    onSwiper={(swiper) => {
+                      heroSwiperRef.current = swiper;
+                    }}
+                  >
+                    {trips.slice(0, 3).map((trip) => (
+                      <SwiperSlide key={trip.id}>
+                        <HeroTripCard
+                          trip={trip}
+                          isFavorite={favorites.some((item) => item.id === trip.id)}
+                          onToggleFavorite={onToggleFavorite}
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+
+                <div className="absolute -bottom-6 left-[-40px] z-20 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => heroSwiperRef.current?.slidePrev()}
+                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
+                    aria-label="Предыдущий слайд"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => heroSwiperRef.current?.slideNext()}
+                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
+                    aria-label="Следующий слайд"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -366,7 +409,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
       </section>
 
       <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative -mt-12 mb-12 rounded-[32px] bg-white p-2 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)]">
+        <div className="relative -mt-12 mb-12 rounded-[32px] border border-white/60 bg-white/78 p-2 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] backdrop-blur-xl">
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
             <div className="relative flex-[1.35]">
               <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
@@ -389,11 +432,10 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   <button
                     key={type}
                     onClick={() => setTypeFilter(type)}
-                    className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
-                      typeFilter === type
-                        ? 'bg-zinc-900 text-white shadow-lg shadow-zinc-200'
-                        : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900'
-                    }`}
+                    className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${typeFilter === type
+                      ? 'bg-zinc-900 text-white shadow-lg shadow-slate-200'
+                      : 'text-zinc-500 hover:bg-sky-50 hover:text-zinc-900'
+                      }`}
                   >
                     {type}
                   </button>
@@ -413,7 +455,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
         </div>
 
         {loading ? (
-          <div className="flex h-64 items-center justify-center rounded-3xl bg-zinc-100">
+          <div className="flex h-64 items-center justify-center rounded-3xl border border-white/60 bg-white/70 backdrop-blur-sm">
             <span className="animate-pulse font-medium text-zinc-400">Поиск лучших предложений...</span>
           </div>
         ) : error ? (
@@ -441,7 +483,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                       type="button"
                       onClick={() => goToPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="cursor-pointer flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-zinc-900 shadow-sm ring-1 ring-zinc-200 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label="Предыдущая страница"
                     >
                       <ChevronLeft size={18} />
@@ -454,11 +496,10 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                             key={page}
                             type="button"
                             onClick={() => goToPage(page)}
-                            className={`min-w-11 h-11 rounded-full px-4 text-sm font-semibold transition ${
-                              currentPage === page
-                                ? 'bg-zinc-900 text-white shadow-lg shadow-zinc-200'
-                                : 'bg-white text-zinc-700 ring-1 ring-zinc-200 hover:bg-zinc-50'
-                            }`}
+                            className={`min-w-11 h-11 rounded-full px-4 text-sm font-semibold transition cursor-pointer ${currentPage === page
+                              ? 'bg-zinc-900 text-white shadow-lg shadow-zinc-200'
+                              : 'bg-white/90 text-zinc-700 ring-1 ring-zinc-200 hover:bg-sky-50'
+                              }`}
                           >
                             {page}
                           </button>
@@ -474,7 +515,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                       type="button"
                       onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="cursor-pointer flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-zinc-900 shadow-sm ring-1 ring-zinc-200 transition hover:bg-sky-50 disabled:cursor-not-allowed disabled:opacity-40"
                       aria-label="Следующая страница"
                     >
                       <ChevronRight size={18} />
@@ -487,7 +528,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                 </div>
               </>
             ) : (
-              <div className="rounded-[40px] bg-white py-24 text-center shadow-sm ring-1 ring-zinc-100">
+              <div className="rounded-[40px] border border-white/60 bg-white/80 py-24 text-center shadow-sm ring-1 ring-white/40 backdrop-blur-sm">
                 <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-zinc-50 p-3 text-zinc-400">
                   <Search className="h-full w-full" />
                 </div>
