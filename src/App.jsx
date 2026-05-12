@@ -4,6 +4,7 @@ import { Header } from './layout/header/Header';
 import { Home } from './pages/Home';
 import { TripDetailsPage } from './pages/TripDetailsPage';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { NotFound } from './pages/NotFound';
 
 export default function App() {
   const [favorites, setFavorites] = useState(() => {
@@ -40,6 +41,7 @@ export default function App() {
           path="/favorites"
           element={<FavoritesPage favorites={favorites} onToggleFavorite={toggleFavorite} />}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

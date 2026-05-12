@@ -27,8 +27,30 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
   const trip = trips.find((item) => String(item.id) === id);
   const isFavorite = favorites.some((item) => item.id === trip?.id);
 
-  if (loading) return <div className="py-20 text-center text-zinc-500">Загрузка...</div>;
-  if (!trip) return <div className="py-20 text-center">Тур не найден</div>;
+if (loading) return <div className="py-20 text-center text-zinc-500">Загрузка...</div>;
+
+if (!trip) {
+  return (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 text-center">
+      <p className="text-sm font-semibold uppercase tracking-widest text-orange-500">
+        Тур не найден
+      </p>
+      <h1 className="mt-3 text-3xl font-bold text-zinc-900">
+        Такого маршрута у нас нет
+      </h1>
+      <p className="mt-3 max-w-md text-zinc-500">
+        Возможно, ссылка устарела или тур был удалён. Попробуйте вернуться к списку направлений.
+      </p>
+
+      <Link
+        to="/"
+        className="mt-8 inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+      >
+        ← Вернуться к турам
+      </Link>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-50">

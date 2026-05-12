@@ -386,7 +386,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   </Swiper>
                 </div>
 
-                <div className="absolute -bottom-6 left-[-40px] z-20 flex items-center gap-2">
+                <div className="absolute -bottom-8 left-[-45px] z-20 flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => heroSwiperRef.current?.slidePrev()}
