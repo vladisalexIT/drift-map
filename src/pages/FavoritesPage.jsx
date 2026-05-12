@@ -3,6 +3,7 @@ import { TripCard } from '../components/TripCard';
 
 export const FavoritesPage = ({ favorites = [], onToggleFavorite }) => {
   return (
+    
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8">
         <p className="text-sm uppercase tracking-[0.28em] text-zinc-400">Saved trips</p>
