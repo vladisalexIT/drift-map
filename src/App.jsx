@@ -5,24 +5,12 @@ import { Home } from './pages/Home';
 import { TripDetailsPage } from './pages/TripDetailsPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { NotFound } from './pages/NotFound';
+import { useFavorites } from './context/FavoritesContext';
 
 export default function App() {
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('favorites');
-    return saved ? JSON.parse(saved) : [];
-  });
 
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
 
-  const toggleFavorite = (trip) => {
-    setFavorites((prev) =>
-      prev.some((item) => item.id === trip.id)
-        ? prev.filter((item) => item.id !== trip.id)
-        : [...prev, trip]
-    );
-  };
+  const { favorites, toggleFavorite, clearFavorites } = useFavorites();
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#ffffff_0%,_#f8fafc_38%,_#f4f4f5_100%)] text-zinc-900">
@@ -39,7 +27,13 @@ export default function App() {
         />
         <Route
           path="/favorites"
-          element={<FavoritesPage favorites={favorites} onToggleFavorite={toggleFavorite} />}
+          element={
+            <FavoritesPage
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              onClearFavorites={clearFavorites}
+            />
+          }
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
