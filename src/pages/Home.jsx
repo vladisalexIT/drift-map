@@ -188,6 +188,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [heroLoaded, setHeroLoaded] = useState(false);
   const heroSwiperRef = useRef(null);
 
   useEffect(() => {
@@ -329,17 +330,30 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
     <main className="relative min-h-screen overflow-hidden bg-[#eaf4fb] text-zinc-900">
       <BackgroundDecorations />
 
-      <section className="relative h-[65vh] min-h-[480px] w-full overflow-hidden bg-zinc-900">
-        <div className="absolute inset-0">
+      <section className="relative h-[65vh] min-h-[480px] w-full overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, #87aade 0%, #87aade 40%, #d4bc96 45%, #9c8a70 100%)",
+          }}
+        />
+
+        <picture className="absolute inset-0 block h-full w-full">
+          <source srcSet="/hero.avif" type="image/avif" />
+          <source srcSet="/hero.webp" type="image/webp" />
           <img
-            src={Hero}
-            alt="Путешествуйте"
-            className="h-full w-full object-cover transition-opacity duration-300"
+            src="/hero.jpg"
+            alt="Хофбург, Вена"
+            className={`block h-full w-full object-cover transition-opacity duration-300 ${heroLoaded ? "opacity-100" : "opacity-0"
+              }`}
             loading="eager"
             fetchPriority="high"
+            decoding="async"
+            onLoad={() => setHeroLoaded(true)}
           />
-          <div className="absolute inset-0 bg-zinc-900/40" />
-        </div>
+        </picture>
+        <div className="absolute inset-0 bg-zinc-900/40" />
 
         <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_360px] lg:items-center">
