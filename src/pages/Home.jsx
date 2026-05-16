@@ -340,10 +340,10 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
         />
 
         <picture className="absolute inset-0 block h-full w-full">
-          <source srcSet="/hero.avif" type="image/avif" />
-          <source srcSet="/hero.webp" type="image/webp" />
+          <source srcSet="./hero.avif" type="image/avif" />
+          <source srcSet="./hero.webp" type="image/webp" />
           <img
-            src="/hero.jpg"
+            src="./hero.jpg"
             alt="Хофбург, Вена"
             className={`block h-full w-full object-cover transition-opacity duration-300 ${heroLoaded ? "opacity-100" : "opacity-0"
               }`}
