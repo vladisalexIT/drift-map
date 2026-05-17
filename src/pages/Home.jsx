@@ -59,11 +59,10 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
             e.stopPropagation();
             onToggleFavorite(trip);
           }}
-          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${
-            isFavorite
-              ? 'bg-red-500 text-white shadow-lg'
-              : 'bg-white/90 text-zinc-900 hover:bg-white hover:scale-110'
-          }`}
+          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${isFavorite
+            ? 'bg-red-500 text-white shadow-lg'
+            : 'bg-white/90 text-zinc-900 hover:bg-white hover:scale-110'
+            }`}
         >
           <Heart
             size={20}
@@ -227,6 +226,7 @@ const parseDeadline = (deadline) => {
   date.setHours(0, 0, 0, 0);
   return date;
 };
+
 
 export const Home = ({ favorites = [], onToggleFavorite }) => {
 
@@ -401,8 +401,6 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   ];
 
 
-
-
   const steps = [
     {
       title: 'Умный поиск и фильтры',
@@ -421,34 +419,45 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
     },
   ];
 
+  useEffect(() => {
+    if (heroLoaded) sessionStorage.setItem('heroLoaded', '1');
+  }, [heroLoaded]);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eaf4fb] text-zinc-900">
       <BackgroundDecorations />
 
-      <section className="relative h-[65vh] min-h-[480px] w-full overflow-hidden">
+      <section className="relative h-[40vh] min-h-[320px] w-full overflow-hidden bg-zinc-800 sm:h-[50vh] sm:min-h-[400px] lg:h-[65vh] lg:min-h-[480px]">
         <div
-          className="absolute inset-0"
+          className={`absolute inset-0 transition-opacity duration-700 ${heroLoaded ? 'opacity-0' : 'opacity-100'
+            }`}
           style={{
-            background:
-              "linear-gradient(to bottom, #87aade 0%, #87aade 40%, #d4bc96 45%, #9c8a70 100%)",
+            background: 'linear-gradient(to bottom, #87aade 0%, #d4bc96 100%)',
+            filter: 'blur(20px)',
+            transform: 'scale(1.1)',
           }}
         />
 
         <picture className="absolute inset-0 block h-full w-full">
-          <source srcSet="./hero.avif" type="image/avif" />
-          <source srcSet="./hero.webp" type="image/webp" />
+          <source
+            media="(max-width: 768px)"
+            srcSet={`${import.meta.env.BASE_URL}hero-mobile.avif`}
+            type="image/avif"
+          />
+          <source srcSet={`${import.meta.env.BASE_URL}hero.avif`} type="image/avif" />
+          <source srcSet={`${import.meta.env.BASE_URL}hero.webp`} type="image/webp" />
           <img
-            src="./hero.jpg"
+            src={`${import.meta.env.BASE_URL}hero.jpg`}
             alt="Хофбург, Вена"
-            className={`block h-full w-full object-cover transition-opacity duration-300 ${heroLoaded ? "opacity-100" : "opacity-0"
+            className={`block h-full w-full object-cover transition-opacity duration-500 ${heroLoaded ? 'opacity-100' : 'opacity-0'
               }`}
             loading="eager"
             fetchPriority="high"
-            decoding="async"
+            decoding="sync"
             onLoad={() => setHeroLoaded(true)}
           />
         </picture>
+
         <div className="absolute inset-0 bg-zinc-900/40" />
 
         <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
@@ -468,7 +477,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
               </p>
             </div>
 
-            <div className="relative hidden lg:block lg:-translate-y-6">
+            <div className="relative hidden min-h-[420px] lg:block lg:-translate-y-6">
               <div className="relative">
                 <div className="rounded-[28px] bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/20">
                   <Swiper
@@ -500,7 +509,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   <button
                     type="button"
                     onClick={() => heroSwiperRef.current?.slidePrev()}
-                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
+                    className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
                     aria-label="Предыдущий слайд"
                   >
                     <ChevronLeft size={18} />
@@ -509,7 +518,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   <button
                     type="button"
                     onClick={() => heroSwiperRef.current?.slideNext()}
-                    className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
+                    className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80 transition-none hover:bg-white hover:text-zinc-900 hover:shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)]"
                     aria-label="Следующий слайд"
                   >
                     <ChevronRight size={18} />
@@ -531,13 +540,11 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Куда отправимся?"
-                className="w-full rounded-[24px] bg-transparent py-6 pl-16 pr-6 text-lg font-medium outline-none placeholder:text-zinc-400"
+                className="w-full rounded-[24px] bg-transparent py-3 pl-13 pr-4 text-base font-medium outline-none placeholder:text-zinc-400 sm:py-4 sm:pl-14 sm:pr-5 lg:py-6 lg:pl-16 lg:pr-6 lg:text-lg"
               />
             </div>
 
-
-
-            <div className="flex flex-wrap items-center gap-2 border-t border-zinc-100 p-3 lg:border-l lg:border-t-0 lg:p-4">
+            <div className="flex flex-wrap items-center gap-2 border-t border-zinc-100 p-0 lg:border-l lg:border-t-0 lg:p-4">
               <div className="mr-2 hidden items-center gap-2 px-2 text-zinc-400 lg:flex">
                 <MapPin size={16} />
                 <span className="text-xs font-semibold uppercase tracking-wider">Тип:</span>

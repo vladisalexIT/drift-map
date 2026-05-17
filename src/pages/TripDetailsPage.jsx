@@ -187,7 +187,7 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
               </div>
 
               <div className="mt-8 overflow-hidden rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-white shadow-sm">
-                <div className="h-1 bg-gradient-to-r from-orange-500 to-amber-400" />
+                <div className="h-1" />
 
                 <div className="p-6">
                   <div className="flex items-center gap-2">
