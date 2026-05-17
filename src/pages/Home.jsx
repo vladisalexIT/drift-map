@@ -439,11 +439,6 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
         />
 
         <picture className="absolute inset-0 block h-full w-full">
-          <source
-            media="(max-width: 768px)"
-            srcSet={`${import.meta.env.BASE_URL}hero-mobile.avif`}
-            type="image/avif"
-          />
           <source srcSet={`${import.meta.env.BASE_URL}hero.avif`} type="image/avif" />
           <source srcSet={`${import.meta.env.BASE_URL}hero.webp`} type="image/webp" />
           <img

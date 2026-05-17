@@ -45,7 +45,7 @@ export const Header = ({ favoritesCount = 0 }) => {
               <span className="max-[840px]:hidden">Мои планы</span>
 
               {favoritesCount > 0 && (
-                <span className="absolute -right-2.5 -top-2.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white max-[840px]:-right-2 max-[840px]:-top-2 max-[840px]:h-5 max-[840px]:min-w-[20px]">
+                <span className="absolute -right-4 -top-4 flex h-6 min-w-[26px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white shadow-sm ring-2 ring-white max-[840px]:-right-2.5 max-[840px]:-top-2.5 max-[840px]:h-6 max-[840px]:min-w-[26px]">
                   {favoritesCount}
                 </span>
               )}
