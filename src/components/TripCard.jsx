@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, MapPin, Calendar, Star, Clock } from 'lucide-react';
 
 const getImageUrl = (path) => {
   if (!path) return '';
@@ -8,95 +8,108 @@ const getImageUrl = (path) => {
 };
 
 export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
-
-  // Функция для обработки клика по кнопкам (чтобы не срабатывал переход по Link)
   const handleAction = (e, callback) => {
-    e.preventDefault(); // Предотвращаем переход по ссылке
-    e.stopPropagation(); // Останавливаем всплытие события к родителю-Link
+    e.preventDefault();
+    e.stopPropagation();
     callback();
   };
 
   return (
     <Link
       to={`/trip/${trip.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-[32px] border border-zinc-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-zinc-200/50"
+      className="group relative flex flex-col overflow-hidden rounded-[24px] border border-zinc-200 bg-white transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
     >
-      {/* Изображение */}
+      {/* Изображение и бейджи */}
       <div className="relative h-64 overflow-hidden">
         <img
           src={getImageUrl(trip.image)}
           alt={trip.title}
           className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+        
+        {/* Градиент поверх фото для читаемости текста */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-        {/* Бейджи */}
-        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-          <span className="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-900 backdrop-blur-md">
+        {/* Рейтинг слева сверху */}
+        <div className="absolute left-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-sm font-bold text-zinc-900 shadow-sm backdrop-blur-md">
+          <Star size={15} className="fill-orange-400 text-orange-400" />
+          {trip.rating}
+        </div>
+
+        {/* Бейдж типа тура справа снизу на фото */}
+        <div className="absolute bottom-4 left-4 flex gap-2">
+          <span className="rounded-lg bg-orange-500 px-2 py-1 text-xs font-bold uppercase tracking-wider text-white">
             {trip.type}
-          </span>
-          <span className="rounded-full bg-zinc-900/80 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md">
-            {trip.country}
           </span>
         </div>
 
-        {/* Кнопка Лайка сверху */}
+        {/* Кнопка в избранное */}
         <button
           onClick={(e) => handleAction(e, () => onToggleFavorite(trip))}
-          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${isFavorite
-            ? 'bg-orange-300 text-white shadow-lg'
-            : 'bg-white/90 text-zinc-900 hover:bg-white'
-            }`}
+          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${
+            isFavorite
+              ? 'bg-red-500 text-white shadow-lg'
+              : 'bg-white/90 text-zinc-900 hover:bg-white hover:scale-110'
+          }`}
         >
           <Heart
-            size={18}
-            className={isFavorite ? 'fill-red-500 text-red-500' : 'text-zinc-900'}
+            size={20}
+            className={isFavorite ? 'fill-current' : 'text-zinc-900'}
           />
         </button>
       </div>
 
-      {/* Контент */}
-      <div className="flex flex-1 flex-col justify-between p-6">
-        <div>
-          <h3 className="text-xl font-bold text-zinc-900 group-hover:text-orange-600 transition-colors">
-            {trip.title}
-          </h3>
-          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-zinc-500">
-            {trip.description}
-          </p>
+      {/* Контентная часть */}
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-2 flex items-center gap-1 text-zinc-400">
+          <MapPin size={15} />
+          <span className="text-sm font-medium uppercase tracking-wider">{trip.country}</span>
         </div>
 
-        <div className="mt-6 flex items-end justify-between">
-          <div className="space-y-1">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400">Длительность</p>
-            <p className="text-sm font-semibold text-zinc-900">{trip.duration}</p>
+        <h3 className="text-xl font-bold leading-tight text-zinc-900 group-hover:text-orange-600 transition-colors">
+          {trip.title}
+        </h3>
+        
+        <p className="mt-2 line-clamp-2 text-base text-zinc-500 leading-relaxed">
+          {trip.description}
+        </p>
+
+        {/* Характеристики */}
+        <div className="mt-5 grid grid-cols-2 gap-4 border-y border-zinc-100 py-4">
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-zinc-100 p-1.5 text-zinc-600">
+              <Clock size={15} />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-zinc-400">Срок</p>
+              <p className="text-sm font-bold text-zinc-900">{trip.duration}</p>
+            </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400 font-bold">Ближайший вылет</p>
-            <p className="text-sm font-semibold text-zinc-900">
-              {trip.deadline || 'Уточняйте'}
+          <div className="flex items-center gap-2">
+            <div className="rounded-full bg-zinc-100 p-1.5 text-zinc-600">
+              <Calendar size={15} />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wider text-zinc-400">Старт</p>
+              <p className="text-sm font-bold text-zinc-900">{trip.deadline}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Цена и кнопка */}
+        <div className="mt-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-zinc-400">Цена за чел.</p>
+            <p className="text-2xl font-black text-zinc-900">
+              ${trip.price}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400">Цена</p>
-            <p className="text-xl font-black text-zinc-900">${trip.price}</p>
+          
+          <div className="flex items-center gap-2">
+            <div className="rounded-xl bg-orange-600 px-5 py-3 text-base font-bold text-white shadow-lg shadow-orange-200 transition-all hover:bg-orange-700 active:scale-95">
+              Подробнее
+            </div>
           </div>
-        </div>
-
-        {/* Кнопки внизу */}
-        <div className="mt-6 flex gap-2">
-          <div className="flex-1 rounded-2xl bg-zinc-900 px-4 py-3.5 text-center text-sm font-bold text-white transition group-hover:bg-orange-600">
-            Подробнее
-          </div>
-          <button
-            onClick={(e) => handleAction(e, () => onToggleFavorite(trip))}
-            className={`rounded-2xl border px-4 py-3.5 text-sm font-bold transition-colors ${isFavorite
-              ? 'border-orange-100 bg-orange-50 text-orange-600'
-              : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
-              }`}
-          >
-            {isFavorite ? 'Убрать' : 'В избранное'}
-          </button>
         </div>
       </div>
     </Link>

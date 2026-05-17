@@ -15,6 +15,7 @@ import {
   Headphones,
   WalletCards,
   CreditCard,
+  Star
 } from 'lucide-react';
 import { SiInstagram, SiFacebook, SiYoutube, SiTelegram } from 'react-icons/si';
 import { TripCard } from '../components/TripCard';
@@ -42,8 +43,13 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-        <div className="absolute left-4 top-4 rounded-full bg-orange-500 px-3 py-1 text-[11px] font-bold text-white shadow-lg">
+        <div className="absolute left-4 top-4 rounded-full bg-orange-500 px-3 py-1 text-sm font-bold text-white shadow-lg">
           {trip.deadline || 'Популярный тур'}
+        </div>
+
+        <div className="absolute left-4 top-[52px] flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-sm font-bold text-zinc-900 shadow-sm backdrop-blur-md">
+          <Star size={15} className="fill-orange-400 text-orange-400" />
+          {trip.rating}
         </div>
 
         <button
@@ -53,23 +59,26 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
             e.stopPropagation();
             onToggleFavorite(trip);
           }}
-          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${isFavorite
-            ? 'bg-orange-300 text-white shadow-lg'
-            : 'bg-white/90 text-zinc-900 hover:bg-white'
-            }`}
+          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${
+            isFavorite
+              ? 'bg-red-500 text-white shadow-lg'
+              : 'bg-white/90 text-zinc-900 hover:bg-white hover:scale-110'
+          }`}
         >
           <Heart
-            size={18}
-            className={isFavorite ? 'fill-red-500 text-red-500' : 'text-zinc-900'}
+            size={20}
+            className={isFavorite ? 'fill-current' : 'text-zinc-900'}
           />
         </button>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-          <div className="mb-2 flex items-center gap-2 text-xs font-medium text-white/85">
-            <MapPin size={14} />
-            <span>{trip.country}</span>
+          <div className="mb-2 flex items-center gap-2 text-sm font-medium text-white/85">
+            <MapPin size={15} />
+            <span className="font-medium uppercase tracking-wider">{trip.country}</span>
             {trip.type ? (
-              <span className="rounded-full bg-white/15 px-2 py-0.5">{trip.type}</span>
+              <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
+                {trip.type}
+              </span>
             ) : null}
           </div>
 
@@ -78,7 +87,7 @@ const HeroTripCard = ({ trip, isFavorite, onToggleFavorite }) => {
           </h4>
 
           {trip.shortDescription ? (
-            <p className="mt-2 line-clamp-2 text-sm text-white/80">
+            <p className="mt-2 line-clamp-2 text-base leading-relaxed text-white/80">
               {trip.shortDescription}
             </p>
           ) : null}
