@@ -14,6 +14,7 @@ import {
   BadgePercent,
   Headphones,
   WalletCards,
+  CreditCard,
 } from 'lucide-react';
 import { SiInstagram, SiFacebook, SiYoutube, SiTelegram } from 'react-icons/si';
 import { TripCard } from '../components/TripCard';
@@ -181,10 +182,50 @@ const Footer = () => {
   );
 };
 
+const monthMap = {
+  января: 0,
+  февраля: 1,
+  марта: 2,
+  апреля: 3,
+  мая: 4,
+  июня: 5,
+  июля: 6,
+  августа: 7,
+  сентября: 8,
+  октября: 9,
+  ноября: 10,
+  декабря: 11,
+};
+
+const normalizeDate = (date) => {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  return normalized;
+};
+
+const parseDeadline = (deadline) => {
+  if (!deadline || typeof deadline !== 'string') return null;
+
+  const parts = deadline.trim().toLowerCase().split(' ');
+  if (parts.length < 2) return null;
+
+  const day = parseInt(parts[0], 10);
+  const month = monthMap[parts[1]];
+
+  if (Number.isNaN(day) || month === undefined) return null;
+
+  const date = new Date(new Date().getFullYear(), month, day);
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
 export const Home = ({ favorites = [], onToggleFavorite }) => {
+
   const [trips, setTrips] = useState([]);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('Все');
+  const [sortBy, setSortBy] = useState('price-desc');
+  const [dateFilter, setDateFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -209,19 +250,44 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
     loadTrips();
   }, []);
 
-  const filteredTrips = useMemo(() => {
-    return trips.filter((trip) => {
+  const processedTrips = useMemo(() => {
+    let result = trips.filter((trip) => {
       const matchType = typeFilter === 'Все' || trip.type === typeFilter;
       const query = search.toLowerCase();
 
-      return (
-        matchType &&
-        (trip.title.toLowerCase().includes(query) ||
-          trip.country.toLowerCase().includes(query) ||
-          trip.description.toLowerCase().includes(query))
-      );
+      const matchSearch =
+        trip.title.toLowerCase().includes(query) ||
+        trip.country.toLowerCase().includes(query);
+
+      const tripDate = parseDeadline(trip.deadline);
+
+      let matchDate = true;
+
+      if (dateFilter === 'soon') {
+        const today = normalizeDate(new Date());
+        const soonLimit = new Date(today);
+        soonLimit.setDate(today.getDate() + 30);
+
+        matchDate = tripDate ? tripDate >= today && tripDate <= soonLimit : false;
+      }
+
+      if (dateFilter === 'may-june') {
+        matchDate = tripDate ? [4, 5].includes(tripDate.getMonth()) : false;
+      }
+
+      if (dateFilter === 'july-august') {
+        matchDate = tripDate ? [6, 7].includes(tripDate.getMonth()) : false;
+      }
+
+      return matchType && matchSearch && matchDate;
     });
-  }, [trips, search, typeFilter]);
+
+    if (sortBy === 'price-asc') result.sort((a, b) => a.price - b.price);
+    if (sortBy === 'price-desc') result.sort((a, b) => b.price - a.price);
+    if (sortBy === 'duration') result.sort((a, b) => parseInt(b.duration) - parseInt(a.duration));
+
+    return result;
+  }, [trips, search, typeFilter, sortBy, dateFilter]);
 
   const types = ['Все', 'Пляжный', 'Городской', 'Природный', 'Активный', 'Wellness'];
 
@@ -236,16 +302,16 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   }, [typeFilter]);
 
   const itemsPerPage = 9;
-  const totalPages = Math.max(1, Math.ceil(filteredTrips.length / itemsPerPage));
+  const totalPages = Math.max(1, Math.ceil(processedTrips.length / itemsPerPage));
 
   const paginatedTrips = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
-    return filteredTrips.slice(start, start + itemsPerPage);
-  }, [filteredTrips, currentPage]);
+    return processedTrips.slice(start, start + itemsPerPage);
+  }, [processedTrips, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, typeFilter]);
+  }, [search, typeFilter, dateFilter, sortBy]);
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
@@ -326,6 +392,27 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
   ];
 
 
+
+
+  const steps = [
+    {
+      title: 'Умный поиск и фильтры',
+      text: 'Найдите идеальный тур среди 150+ предложений, используя фильтры по бюджету, датам и типу отдыха.',
+      icon: Compass,
+    },
+    {
+      title: 'Мгновенное бронирование',
+      text: 'Оформляйте поездку онлайн за 5 минут: данные вводятся один раз и хранятся в защищенном профиле.',
+      icon: CreditCard,
+    },
+    {
+      title: 'Поддержка и документы',
+      text: 'Получайте билеты и ваучеры в личный кабинет. Мы на связи 24/7 до самого конца вашего отпуска.',
+      icon: ShieldCheck,
+    },
+  ];
+
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#eaf4fb] text-zinc-900">
       <BackgroundDecorations />
@@ -400,7 +487,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
                   </Swiper>
                 </div>
 
-                <div className="absolute -bottom-8 left-[-45px] z-20 flex items-center gap-2">
+                <div className="absolute -bottom-12 left-[-46px] z-20 flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => heroSwiperRef.current?.slidePrev()}
@@ -439,6 +526,8 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
               />
             </div>
 
+
+
             <div className="flex flex-wrap items-center gap-2 border-t border-zinc-100 p-3 lg:border-l lg:border-t-0 lg:p-4">
               <div className="mr-2 hidden items-center gap-2 px-2 text-zinc-400 lg:flex">
                 <MapPin size={16} />
@@ -462,12 +551,39 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
           </div>
         </div>
 
-        <div className="mb-8 flex items-end justify-between">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-zinc-900">{dynamicTitle}</h2>
             <p className="mt-1 text-sm text-zinc-500">
-              Найдено {filteredTrips.length} вариантов для вашего отдыха
+              Найдено {processedTrips.length} вариантов для вашего отдыха
             </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center rounded-2xl bg-white/50 p-1 shadow-sm ring-1 ring-zinc-200">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-transparent px-3 py-1.5 text-sm font-bold text-zinc-600 outline-none cursor-pointer"
+              >
+                <option value="price-asc">Сначала дешевле</option>
+                <option value="price-desc">Сначала дороже</option>
+                <option value="duration">Дольше по времени</option>
+              </select>
+            </div>
+
+            <div className="flex items-center rounded-2xl bg-white/50 p-1 shadow-sm ring-1 ring-zinc-200">
+              <select
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="bg-transparent px-3 py-1.5 text-sm font-bold text-zinc-600 outline-none cursor-pointer"
+              >
+                <option value="all">Все даты</option>
+                <option value="soon">Ближайшие</option>
+                <option value="may-june">Май — Июнь</option>
+                <option value="july-august">Июль — Август</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -481,7 +597,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
           </div>
         ) : (
           <>
-            {filteredTrips.length > 0 ? (
+            {processedTrips.length > 0 ? (
               <>
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                   {paginatedTrips.map((trip) => (
@@ -564,6 +680,42 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
             )}
           </>
         )}
+
+        <div className="mt-20 rounded-[36px] border border-white/60 bg-white/75 p-6 shadow-[0_30px_70px_-24px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:p-8">
+          <div className="mb-8">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-zinc-400">
+              Как это работает
+            </p>
+            <h3 className="mt-2 text-2xl font-bold text-zinc-900">
+              Три шага до идеального путешествия
+            </h3>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+
+              return (
+                <div
+                  key={step.title}
+                  className="rounded-[28px] bg-zinc-50 p-5 ring-1 ring-zinc-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-zinc-900 text-white">
+                      <Icon size={20} />
+                    </div>
+                    <div className="text-sm font-semibold text-zinc-400">
+                      Шаг {index + 1}
+                    </div>
+                  </div>
+
+                  <h4 className="mt-4 text-lg font-bold text-zinc-900">{step.title}</h4>
+                  <p className="mt-2 text-sm leading-6 text-zinc-500">{step.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="mt-20">
           <div className="overflow-hidden rounded-[36px] cursor-pointer">

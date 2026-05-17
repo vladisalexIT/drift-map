@@ -8,7 +8,7 @@ const getImageUrl = (path) => {
 };
 
 export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
-  
+
   // Функция для обработки клика по кнопкам (чтобы не срабатывал переход по Link)
   const handleAction = (e, callback) => {
     e.preventDefault(); // Предотвращаем переход по ссылке
@@ -17,7 +17,7 @@ export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
   };
 
   return (
-    <Link 
+    <Link
       to={`/trip/${trip.id}`}
       className="group relative flex flex-col overflow-hidden rounded-[32px] border border-zinc-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-zinc-200/50"
     >
@@ -43,11 +43,10 @@ export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
         {/* Кнопка Лайка сверху */}
         <button
           onClick={(e) => handleAction(e, () => onToggleFavorite(trip))}
-          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${
-            isFavorite 
-              ? 'bg-orange-300 text-white shadow-lg' 
-              : 'bg-white/90 text-zinc-900 hover:bg-white'
-          }`}
+          className={`absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full transition-all duration-300 backdrop-blur-md ${isFavorite
+            ? 'bg-orange-300 text-white shadow-lg'
+            : 'bg-white/90 text-zinc-900 hover:bg-white'
+            }`}
         >
           <Heart
             size={18}
@@ -72,6 +71,12 @@ export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
             <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400">Длительность</p>
             <p className="text-sm font-semibold text-zinc-900">{trip.duration}</p>
           </div>
+          <div className="space-y-1">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400 font-bold">Ближайший вылет</p>
+            <p className="text-sm font-semibold text-zinc-900">
+              {trip.deadline || 'Уточняйте'}
+            </p>
+          </div>
           <div className="text-right">
             <p className="text-[11px] font-medium uppercase tracking-widest text-zinc-400">Цена</p>
             <p className="text-xl font-black text-zinc-900">${trip.price}</p>
@@ -85,11 +90,10 @@ export const TripCard = ({ trip, isFavorite, onToggleFavorite }) => {
           </div>
           <button
             onClick={(e) => handleAction(e, () => onToggleFavorite(trip))}
-            className={`rounded-2xl border px-4 py-3.5 text-sm font-bold transition-colors ${
-              isFavorite 
-                ? 'border-orange-100 bg-orange-50 text-orange-600' 
-                : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
-            }`}
+            className={`rounded-2xl border px-4 py-3.5 text-sm font-bold transition-colors ${isFavorite
+              ? 'border-orange-100 bg-orange-50 text-orange-600'
+              : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
+              }`}
           >
             {isFavorite ? 'Убрать' : 'В избранное'}
           </button>
