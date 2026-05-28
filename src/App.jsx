@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './layout/header/Header';
-import { Home } from './pages/Home';
+import { Home } from './pages/Home/Home';
 import { TripDetailsPage } from './pages/TripDetailsPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { NotFound } from './pages/NotFound';
