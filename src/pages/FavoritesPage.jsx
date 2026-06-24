@@ -9,7 +9,7 @@ export const FavoritesPage = ({ favorites = [], onToggleFavorite, onClearFavorit
         <BackgroundDecorations />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-[1600px] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <p className="text-sm uppercase tracking-[0.28em] text-zinc-400">Saved trips</p>
@@ -35,7 +35,7 @@ export const FavoritesPage = ({ favorites = [], onToggleFavorite, onClearFavorit
         </div>
 
         {favorites.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {favorites.map((trip) => (
               <TripCard
                 key={trip.id}

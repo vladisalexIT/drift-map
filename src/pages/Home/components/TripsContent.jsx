@@ -16,7 +16,7 @@ const TripsContent = ({
 }) => {
   if (loading) {
     return (
-      <div className="flex h-64 items-center justify-center rounded-3xl border border-white/60 bg-white/70 backdrop-blur-sm">
+      <div className="flex h-72 items-center justify-center rounded-[32px] border border-white/60 bg-white/75 shadow-sm ring-1 ring-white/40 backdrop-blur-sm">
         <span className="animate-pulse font-medium text-zinc-400">
           Поиск лучших предложений...
         </span>
@@ -26,7 +26,7 @@ const TripsContent = ({
 
   if (error) {
     return (
-      <div className="rounded-3xl bg-red-50 p-12 text-center text-red-600">
+      <div className="rounded-[32px] border border-red-100 bg-red-50 p-12 text-center text-red-600 shadow-sm">
         Произошла ошибка при загрузке данных.
       </div>
     );
@@ -35,15 +35,13 @@ const TripsContent = ({
   if (trips.length === 0) {
     return (
       <div className="rounded-[40px] border border-white/60 bg-white/80 py-24 text-center shadow-sm ring-1 ring-white/40 backdrop-blur-sm">
-        <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-zinc-50 p-3 text-zinc-400">
-          <Search className="h-full w-full" />
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-zinc-50 text-zinc-400">
+          <Search className="h-6 w-6" />
         </div>
-
         <h3 className="text-xl font-bold text-zinc-900">Ничего не найдено</h3>
         <p className="mt-2 text-zinc-500">
           Попробуйте изменить запрос или сбросить фильтры
         </p>
-
         <button
           type="button"
           onClick={onResetFilters}
@@ -57,7 +55,7 @@ const TripsContent = ({
 
   return (
     <>
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {trips.map((trip) => (
           <TripCard
             key={trip.id}

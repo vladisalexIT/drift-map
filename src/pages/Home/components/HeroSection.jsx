@@ -40,7 +40,7 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
 
       <div className="absolute inset-0 bg-zinc-900/40" />
 
-      <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex h-full max-w-[1600px] items-center px-4 sm:px-6 lg:px-8">
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_360px] lg:items-center">
           <div className="max-w-2xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md ring-1 ring-white/20">
@@ -85,7 +85,7 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
                 </Swiper>
               </div>
 
-              <div className="absolute -bottom-12 left-[-46px] z-20 flex items-center gap-2">
+              <div className="absolute -bottom-13 left-[-45px] z-20 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => heroSwiperRef.current?.slidePrev()}

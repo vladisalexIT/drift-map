@@ -25,7 +25,7 @@ export const TITLE_BY_TYPE = {
   Wellness: 'Оздоровительные направления',
 };
 
-export const ITEMS_PER_PAGE = 9;
+export const ITEMS_PER_PAGE = 8;
 
 export const MONTH_MAP = {
   января: 0,
