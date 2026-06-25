@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
 import {
   Heart,
   MapPin,
@@ -9,259 +11,474 @@ import {
   CalendarDays,
   ArrowLeft,
   ShieldCheck,
-  CheckCircle2,
   Sparkles,
+  ChevronDown,
+  Camera,
+  Hotel,
+  UtensilsCrossed,
+  Compass,
+  ChevronRight,
+  Quote,
+  Info,
+  ChevronLeft,
+  CheckCircle2,
+  Download
 } from 'lucide-react';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
   const { id } = useParams();
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}mock/data.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         setTrips(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error('Ошибка загрузки JSON:', err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, []);
 
-  const trip = useMemo(
-    () => trips.find((item) => String(item.id) === id),
-    [trips, id]
-  );
-
+  const trip = useMemo(() => trips.find((item) => String(item.id) === id), [trips, id]);
   const isFavorite = favorites.some((item) => item.id === trip?.id);
+
+  const gallery = trip ? [trip.image, trip.image, trip.image, trip.image] : [];
 
   if (loading) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center px-4 text-center">
-        <div>
-          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-zinc-200 border-t-orange-500" />
-          <p className="mt-4 text-sm font-medium text-zinc-500">Загрузка тура...</p>
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
       </div>
     );
   }
 
   if (!trip) {
-    return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-orange-500">
-          Тур не найден
-        </p>
-        <h1 className="mt-3 text-3xl font-bold text-zinc-900">
-          Такого маршрута у нас нет
-        </h1>
-        <p className="mt-3 max-w-md text-zinc-500">
-          Возможно, ссылка устарела или тур был удалён. Попробуйте вернуться к списку направлений.
-        </p>
-
-        <Link
-          to="/"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 cursor-pointer"
-        >
-          <ArrowLeft size={16} />
-          Вернуться к турам
-        </Link>
-      </div>
-    );
+    return <div className="text-center p-20 font-bold">Тур не найден</div>;
   }
 
-  return (
-    <div className="min-h-screen bg-slate-50">
-      <main className="mx-auto max-w-7xl px-4 pb-12 pt-4 sm:px-6 lg:px-8">
-        <Link
-          to="/"
-          className="mb-4 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 shadow-sm transition hover:bg-zinc-50 cursor-pointer"
-        >
-          <ArrowLeft size={16} />
-          Назад
-        </Link>
+  const detailedDescription = `
+    Вас ждёт уникальное погружение в атмосферу локации. ${trip.description}
+    Мы разработали этот маршрут так, чтобы вы могли прочувствовать настоящий ритм жизни региона,
+    избегая туристических толп. В программе собраны только проверенные места: от уютных
+    локальных кафе до панорамных точек для лучших фотографий.
+    Позвольте себе забыть о логистике и просто наслаждаться моментом.
+  `;
 
-        <div className="overflow-hidden rounded-[2rem] border border-zinc-200 bg-white shadow-xl relative">
+  const highlights = [
+    {
+      icon: <Compass size={20} />,
+      title: 'Авторский маршрут',
+      desc: 'Интересные точки без банальных остановок',
+      accent: 'Продуманный план'
+    },
+    {
+      icon: <Camera size={20} />,
+      title: 'Фото-локации',
+      desc: 'Красивые виды и лучшие места для снимков',
+      accent: 'Лучшие ракурсы'
+    },
+    {
+      icon: <UtensilsCrossed size={20} />,
+      title: 'Гастро-опыт',
+      desc: 'Локальная кухня и атмосферные места',
+      accent: 'Проверенные места'
+    },
+    {
+      icon: <Hotel size={20} />,
+      title: 'Комфорт',
+      desc: 'Удобное проживание и спокойный темп',
+      accent: 'Без суеты'
+    }
+  ];
+
+  const faqs = [
+    {
+      id: 'included',
+      title: 'Что включено в стоимость?',
+      content:
+        'Трансферы по всему маршруту, проживание в двухместных номерах, завтраки, услуги гида-организатора и все входные билеты по программе.'
+    },
+    {
+      id: 'support',
+      title: 'Как проходит подготовка?',
+      content:
+        'После бронирования мы добавим вас в закрытый чат, пришлем подробный чек-лист по вещам и поможем с выбором авиабилетов.'
+    },
+    {
+      id: 'payment',
+      title: 'Можно ли оплатить частями?',
+      content:
+        'Да, обычно доступна предоплата для фиксации места, а остаток можно внести ближе к старту путешествия.'
+    }
+  ];
+
+  const reviews = [
+    {
+      name: 'Анна',
+      city: 'Москва',
+      avatar: 'А',
+      rating: 5,
+      text: 'Это была одна из самых красивых поездок в моей жизни. Всё очень стильно организовано, без перегруза и суеты. Особенно понравились локации и атмосфера внутри группы.'
+    },
+    {
+      name: 'Илья',
+      city: 'Санкт-Петербург',
+      avatar: 'И',
+      rating: 5,
+      text: 'Очень сильный маршрут: красивые места, хорошие отели и реально удобная логистика. Было ощущение, что за нас уже всё продумали.'
+    },
+    {
+      name: 'Мария',
+      city: 'Казань',
+      avatar: 'М',
+      rating: 5,
+      text: 'Поехала одна и вообще ни разу не пожалела. Быстро влилась в компанию, программа насыщенная, но комфортная. Фотографий привезла просто море.'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#FDFDFC]">
+      <nav className="sticky top-0 z-[100] border-b border-zinc-100 bg-white/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 h-20">
+          <Link to="/" className="flex items-center gap-3 text-sm font-bold text-zinc-900 group">
+            <div className="p-2 rounded-full bg-zinc-100 group-hover:bg-orange-500 group-hover:text-white transition-all">
+              <ArrowLeft size={18} />
+            </div>
+            <span>Ко всем направлениям</span>
+          </Link>
+
           <button
             onClick={() => onToggleFavorite(trip)}
-            className={`absolute right-6 top-6 z-20 grid h-12 w-12 place-items-center rounded-full border-2 bg-white transition-all duration-300 cursor-pointer shadow-md ${isFavorite
-              ? 'border-rose-200 text-rose-500 hover:bg-rose-50'
-              : 'border-zinc-300 text-zinc-700 hover:border-zinc-400 hover:bg-zinc-50'
-              }`}
-            aria-label="Добавить в избранное"
+            className={`flex items-center gap-3 px-6 py-4 rounded-full border transition-all shadow-sm ${
+              isFavorite
+                ? 'bg-rose-50 border-rose-200 text-rose-500'
+                : 'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-400 hover:shadow-md'
+            }`}
           >
-            <Heart className={`h-6 w-6 ${isFavorite ? 'fill-current' : ''}`} />
+            <Heart size={24} className={isFavorite ? 'fill-current' : ''} />
+            <span className="text-sm font-black uppercase tracking-[0.18em]">
+              {isFavorite ? 'В избранном' : 'В избранное'}
+            </span>
           </button>
+        </div>
+      </nav>
 
-          <div className="flex flex-col lg:flex-row">
-            <div className="relative min-h-[360px] lg:w-[54%]">
-              <img
-                src={`${import.meta.env.BASE_URL}${trip.image}`}
-                alt={trip.title}
-                className="h-full w-full object-cover"
-              />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-              <div className="absolute left-6 top-6 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-white/90 px-4 py-2 text-sm font-bold text-zinc-900 shadow-sm">
-                  <Sparkles size={13} />
-                  {trip.type || 'Авторский тур'}
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-black/35 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md">
-                  <Star size={13} className="fill-yellow-400 text-yellow-400" />
-                  4.9
-                </span>
-              </div>
-
-              <div className="absolute bottom-6 left-6 right-6">
-                <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-white/75">
-                  {trip.country}
-                </p>
-                <h1 className="max-w-xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-                  {trip.title}
-                </h1>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-medium text-white backdrop-blur-md">
-                    <Clock3 size={14} />
-                    {trip.duration}
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-medium text-white backdrop-blur-md">
-                    <MapPin size={14} />
-                    {trip.country}
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-medium text-white backdrop-blur-md">
-                    <Users size={14} />
-                    Места ограничены
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col p-6 sm:p-8 lg:w-[46%] lg:p-12">
-              <div className="flex items-start justify-between gap-6">
-                <div>
-                  <p className="text-sm font-medium uppercase tracking-wider text-zinc-500">
-                    Цена за тур
-                  </p>
-                  <div className="mt-2 flex items-end gap-2">
-                    <p className="text-4xl font-black tracking-tight text-zinc-900">
-                      ${trip.price}
-                    </p>
-                    <span className="pb-1 text-sm font-medium text-zinc-400">/ ЗА 1 ЧЕЛ.</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50 p-4">
-                  <Clock3 className="h-5 w-5 text-orange-500" />
-                  <p className="mt-3 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Длительность
-                  </p>
-                  <p className="mt-1 font-bold text-zinc-900">{trip.duration}</p>
-                </div>
-
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50 p-4">
-                  <MapPin className="h-5 w-5 text-orange-500" />
-                  <p className="mt-3 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Локация
-                  </p>
-                  <p className="mt-1 font-bold text-zinc-900">{trip.country}</p>
-                </div>
-
-                <div className="rounded-2xl border border-zinc-100 bg-zinc-50 p-4">
-                  <CalendarDays className="h-5 w-5 text-orange-500" />
-                  <p className="mt-3 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Старт
-                  </p>
-                  <p className="mt-1 font-bold text-zinc-900">{trip.deadline || 'По запросу'}</p>
-                </div>
-              </div>
-
-              <div className="mt-8 overflow-hidden rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 via-white to-white shadow-sm">
-                <div className="h-1" />
-
-                <div className="p-6">
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-orange-500" />
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">
-                      Почему этот тур выбирают
-                    </h3>
-                  </div>
-
-                  <div className="mt-5 space-y-3">
-                    <div className="flex gap-4 rounded-2xl bg-white/80 p-4 shadow-sm ring-1 ring-zinc-100">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-                        1
-                      </span>
-                      <p className="text-sm leading-relaxed text-zinc-600">
-                        Маршрут построен так, чтобы меньше времени проводить в дороге и больше — на локациях.
-                      </p>
-                    </div>
-
-                    <div className="flex gap-4 rounded-2xl bg-white/80 p-4 shadow-sm ring-1 ring-zinc-100">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-                        2
-                      </span>
-                      <p className="text-sm leading-relaxed text-zinc-600">
-                        Продуманная логистика, комфортные остановки и понятная программа без лишней суеты.
-                      </p>
-                    </div>
-
-                    <div className="flex gap-4 rounded-2xl bg-white/80 p-4 shadow-sm ring-1 ring-zinc-100">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
-                        3
-                      </span>
-                      <p className="text-sm leading-relaxed text-zinc-600">
-                        Подходит для тех, кто хочет получить яркие впечатления в удобном и понятном формате.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-900">
-                  О путешествии
-                </h3>
-                <p className="mt-3 leading-relaxed text-zinc-600">
-                  {trip.description}
-                </p>
-              </div>
-
-
-
-              <div className="mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-5">
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <button className="flex-1 cursor-pointer rounded-2xl bg-zinc-900 px-8 py-4 text-center font-bold text-white transition-colors duration-200 hover:bg-orange-600">
-                    Забронировать
-                  </button>
-                  <button className="cursor-pointer rounded-2xl border border-zinc-200 bg-white px-8 py-4 text-center font-bold text-zinc-700 transition hover:bg-zinc-50">
-                    Скачать программу
-                  </button>
-                </div>
-
-                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-zinc-500">
-                  <span className="inline-flex items-center gap-2">
-                    <ShieldCheck size={14} className="text-orange-500" />
-                    Безопасное бронирование
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <Users size={14} className="text-orange-500" />
-                    Поддержка перед поездкой
-                  </span>
-                </div>
-              </div>
-            </div>
+      <main className="mx-auto max-w-[1600px] px-6 py-10">
+        <div className="mb-10 max-w-5xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-orange-100 text-orange-700 font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+            <MapPin size={12} strokeWidth={3} /> {trip.country}
           </div>
+
+          <h1 className="text-5xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-[0.9] mb-6">
+            {trip.title}
+          </h1>
+
+          <p className="text-xl text-zinc-500 leading-relaxed font-medium italic max-w-4xl">
+            {trip.description}
+          </p>
+        </div>
+
+        <section className="mb-20 grid lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px] gap-8 items-start">
+          <div className="relative group">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={20}
+              slidesPerView={1}
+              loop={true}
+              navigation={{
+                prevEl: '.swiper-button-prev-custom',
+                nextEl: '.swiper-button-next-custom'
+              }}
+              pagination={{ clickable: true, dynamicBullets: true }}
+              className="rounded-[3rem] overflow-hidden"
+            >
+              {gallery.map((img, idx) => (
+                <SwiperSlide key={idx} className="overflow-hidden rounded-[2.5rem]">
+                  <div className="aspect-[16/10] md:aspect-[16/9] w-full relative">
+                    <img
+                      src={`${import.meta.env.BASE_URL}${img}`}
+                      alt={trip.title}
+                      className="h-full w-full object-cover"
+                    />
+
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/55 via-black/10 to-transparent">
+                      <div className="flex flex-wrap gap-3">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20">
+                          <Clock3 size={16} />
+                          <span className="text-sm font-bold">{trip.duration}</span>
+                        </div>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20">
+                          <Users size={16} />
+                          <span className="text-sm font-bold">до 10 человек</span>
+                        </div>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20">
+                          <Star size={16} className="fill-current text-yellow-300" />
+                          <span className="text-sm font-bold">4.9 из 5</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <button className="swiper-button-prev-custom absolute left-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:text-black cursor-pointer">
+              <ChevronLeft size={28} />
+            </button>
+
+            <button className="swiper-button-next-custom absolute right-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:text-black cursor-pointer">
+              <ChevronRight size={28} />
+            </button>
+          </div>
+
+          <aside className="lg:sticky lg:top-28">
+            <div className="bg-white rounded-[3rem] p-8 xl:p-9 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-zinc-100">
+              <div className="flex items-start justify-between gap-4 mb-7">
+                <div>
+                  <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2 block">
+                    Стоимость тура
+                  </span>
+                  <div className="flex items-end gap-2">
+                    <span className="text-5xl xl:text-6xl font-black text-zinc-900 leading-none">
+                      ${trip.price}
+                    </span>
+                    <span className="text-zinc-400 font-bold pb-1">/чел</span>
+                  </div>
+                </div>
+
+                <div className="px-3 py-2 rounded-2xl bg-orange-50 text-orange-600 border border-orange-100 shrink-0">
+                  <Sparkles size={18} />
+                </div>
+              </div>
+
+              <div className="space-y-4 mb-7">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-50 p-4 rounded-2xl border border-zinc-100">
+                    <Clock3 size={18} className="text-orange-500 mb-2" />
+                    <p className="text-[10px] font-bold text-zinc-400 uppercase">Срок</p>
+                    <p className="font-bold text-zinc-900">{trip.duration}</p>
+                  </div>
+
+                  <div className="bg-zinc-50 p-4 rounded-2xl border border-zinc-100">
+                    <Users size={18} className="text-orange-500 mb-2" />
+                    <p className="text-[10px] font-bold text-zinc-400 uppercase">Группа</p>
+                    <p className="font-bold text-zinc-900">до 10 чел.</p>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100 flex items-center gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <CalendarDays size={20} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-emerald-600 uppercase">Ближайшая дата</p>
+                    <p className="font-bold text-zinc-900">{trip.deadline || '15 — 22 Мая'}</p>
+                  </div>
+                </div>
+
+                <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100">
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck size={18} className="text-orange-500 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-bold text-zinc-900 text-sm">Бесплатная отмена</p>
+                      <p className="text-sm text-zinc-500">За 14 дней до начала путешествия</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4 mb-4">
+                <button className="w-full bg-zinc-900 text-white py-5 rounded-[1.5rem] font-bold text-lg hover:bg-orange-600 transition-all shadow-xl shadow-zinc-200 active:scale-[0.98] cursor-pointer">
+                  Забронировать тур
+                </button>
+
+                <button className="w-full bg-white text-zinc-900 py-5 rounded-[1.5rem] font-bold text-lg border border-zinc-200 hover:border-zinc-400 hover:bg-zinc-50 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-3">
+                  <Download size={20} />
+                  Скачать программу
+                </button>
+              </div>
+
+              <p className="text-[10px] text-center text-zinc-400 font-bold uppercase tracking-[0.14em]">
+                Гарантия лучшей цены и мгновенное подтверждение
+              </p>
+            </div>
+          </aside>
+        </section>
+
+        <div className="space-y-20">
+          <section>
+            <div className="grid xl:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-8 items-start">
+              <div>
+                <h2 className="text-3xl font-black text-zinc-900 mb-8">О путешествии</h2>
+                <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 md:p-10 shadow-sm h-full">
+                  <p className="text-lg text-zinc-600 whitespace-pre-line leading-relaxed">
+                    {detailedDescription}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="rounded-[2.5rem] bg-gradient-to-br from-orange-500 to-rose-500 text-white p-8 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center mb-6">
+                    <Sparkles size={24} />
+                  </div>
+                  <h3 className="text-2xl font-black mb-3">Эстетика маршрута</h3>
+                  <p className="text-white/85 leading-relaxed">
+                    Поездка собрана так, чтобы в ней было много красивых моментов, сильных видов и ощущения настоящего путешествия.
+                  </p>
+                </div>
+
+                <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-6">
+                    <ShieldCheck size={24} />
+                  </div>
+                  <h3 className="text-2xl font-black text-zinc-900 mb-3">Комфорт и поддержка</h3>
+                  <p className="text-zinc-600 leading-relaxed">
+                    Мы берём на себя организацию, логистику и помощь на каждом этапе, чтобы вы могли отдыхать без лишней суеты.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl font-black text-zinc-900 mb-2">Что вас ждет</h2>
+                <p className="text-zinc-500">
+                  Самое главное, ради чего стоит поехать в это путешествие.
+                </p>
+              </div>
+
+              <div className="inline-flex w-fit items-center gap-2 px-4 py-2 rounded-full bg-orange-50 text-orange-600 border border-orange-100 text-sm font-bold">
+                <Sparkles size={16} />
+                Проверенный маршрут
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              {highlights.map((item, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-[1.75rem] border border-zinc-100 bg-white p-5 shadow-sm hover:shadow-md transition-all"
+                >
+                  <div className="absolute right-0 top-0 h-20 w-20 rounded-full bg-orange-100 blur-3xl opacity-50" />
+
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-4 shadow-md">
+                      {item.icon}
+                    </div>
+
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-50 border border-zinc-100 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-3">
+                      <CheckCircle2 size={13} className="text-emerald-500" />
+                      {item.accent}
+                    </div>
+
+                    <h3 className="font-black text-lg text-zinc-900 mb-2">{item.title}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[3rem] bg-zinc-900 text-white p-8 md:p-10 xl:p-12">
+            <div className="grid xl:grid-cols-[320px_minmax(0,1fr)] gap-10">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-black mb-4 flex items-center gap-3">
+                  <Info className="text-orange-500" />
+                  Полезная информация
+                </h2>
+                <p className="text-zinc-400 leading-relaxed">
+                  Всё, что важно знать до бронирования и перед стартом поездки.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                {faqs.map((faq) => (
+                  <div key={faq.id} className="border-b border-white/10 last:border-0">
+                    <button
+                      onClick={() => setOpenFaq(openFaq === faq.id ? null : faq.id)}
+                      className="w-full flex items-center justify-between py-6 text-left gap-6"
+                    >
+                      <span className="font-bold text-lg">{faq.title}</span>
+                      <ChevronDown
+                        className={`shrink-0 transition-transform duration-300 ${
+                          openFaq === faq.id ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${
+                        openFaq === faq.id ? 'max-h-40 pb-6' : 'max-h-0'
+                      }`}
+                    >
+                      <p className="text-zinc-400 leading-relaxed">{faq.content}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="pt-4">
+            <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6 mb-8">
+              <div>
+                <h2 className="text-3xl font-black text-zinc-900 mb-2">Отзывы путешественников</h2>
+                <p className="text-zinc-500">
+                  Реальные впечатления тех, кто уже был в этом путешествии
+                </p>
+              </div>
+
+              <div className="inline-flex w-fit items-center gap-2 text-sm font-bold text-zinc-700">
+                <Star size={16} className="fill-yellow-400 text-yellow-400" />
+                4.9 средняя оценка
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {reviews.map((review, index) => (
+                <article
+                  key={index}
+                  className="relative overflow-hidden rounded-[2.5rem] bg-white border border-zinc-100 p-8 shadow-sm hover:shadow-lg transition-all"
+                >
+                  <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-orange-100 blur-2xl opacity-70" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between gap-4 mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-rose-400 text-white flex items-center justify-center font-black text-lg shadow-md">
+                          {review.avatar}
+                        </div>
+
+                        <div>
+                          <p className="font-black text-zinc-900">{review.name}</p>
+                          <p className="text-sm text-zinc-500">{review.city}</p>
+                        </div>
+                      </div>
+
+                      <Quote className="text-orange-200" size={28} />
+                    </div>
+
+                    <div className="flex items-center gap-1 mb-4">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+
+                    <p className="text-zinc-600 leading-relaxed">{review.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
     </div>

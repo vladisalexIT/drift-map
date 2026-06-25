@@ -40,9 +40,9 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
 
       <div className="absolute inset-0 bg-zinc-900/40" />
 
-      <div className="relative mx-auto flex h-full max-w-[1600px] items-center px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex h-full max-w-[1800px] items-center px-4 sm:px-6 lg:px-8">
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_360px] lg:items-center">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md ring-1 ring-white/20">
               <Sparkles size={12} className="text-yellow-400" />
               DriftMap Experience

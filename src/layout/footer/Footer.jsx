@@ -21,7 +21,7 @@ const Footer = () => {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-[1600px] px-4 py-14 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-[1800px] px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr]">
           <div>
             <Link to="/" className="group mb-4 flex items-center gap-3">

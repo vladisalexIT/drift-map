@@ -8,7 +8,7 @@ const TripsFiltersBar = ({
   onTypeChange,
 }) => {
   return (
-    <div className="relative -mt-12 mb-12 rounded-[32px] border border-white/60 bg-white/78 p-2 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+    <div className="relative -mt-12 mb-12 rounded-[32px] border border-white/60 bg-white/78 p-2 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] backdrop-blur-xl lg:p-2 2xl:p-4">
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
         <div className="relative flex-[1.35]">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
