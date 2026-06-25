@@ -62,13 +62,56 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
     return <div className="text-center p-20 font-bold">Тур не найден</div>;
   }
 
+  const getTripMoodText = (description = '') => {
+    const text = description.toLowerCase();
+
+    if (
+      text.includes('море') ||
+      text.includes('пляж') ||
+      text.includes('океан') ||
+      text.includes('остров') ||
+      text.includes('берег')
+    ) {
+      return 'Это путешествие создано для тех, кто хочет насладиться спокойным ритмом побережья, красивыми морскими пейзажами, мягкой атмосферой отдыха у воды и ощущением полной перезагрузки вдали от повседневной суеты. Здесь особенно приятно встречать закаты, гулять вдоль берега и просто позволить себе замедлиться.';
+    }
+
+    if (
+      text.includes('горы') ||
+      text.includes('озеро') ||
+      text.includes('лес') ||
+      text.includes('природ') ||
+      text.includes('водопад')
+    ) {
+      return 'Этот маршрут подойдёт тем, кто любит природу, чистый воздух, живописные пейзажи и спокойные прогулки вдали от городской суеты. Вас ждут красивые виды, атмосферные локации и возможность почувствовать настоящее единение с природой, наслаждаясь каждым моментом пути.';
+    }
+
+    if (
+      text.includes('город') ||
+      text.includes('улиц') ||
+      text.includes('небоскрёб') ||
+      text.includes('кафе') ||
+      text.includes('рынок')
+    ) {
+      return 'Здесь вас ждёт насыщенная городская атмосфера, интересные прогулки, местная кухня, яркие улицы и места, где особенно приятно почувствовать ритм города. Этот маршрут позволяет увидеть не только главные точки, но и прочувствовать характер места через его детали, настроение и повседневную жизнь.';
+    }
+
+    if (
+      text.includes('деревн') ||
+      text.includes('село') ||
+      text.includes('виноград') ||
+      text.includes('сельск')
+    ) {
+      return 'Этот маршрут понравится тем, кто ценит размеренный темп, красивые сельские пейзажи, тишину, уютную атмосферу и спокойное путешествие без лишней спешки. Здесь можно насладиться простыми, но очень тёплыми впечатлениями, которые часто запоминаются даже сильнее самых ярких достопримечательностей.';
+    }
+
+    return 'Это путешествие создано для того, чтобы вы смогли почувствовать атмосферу места, увидеть его главные особенности, открыть для себя интересные локации и провести время в комфортном, гармоничном ритме. Маршрут продуман так, чтобы каждая остановка приносила удовольствие и оставляла приятные впечатления.';
+  };
+
   const detailedDescription = `
-    Вас ждёт уникальное погружение в атмосферу локации. ${trip.description}
-    Мы разработали этот маршрут так, чтобы вы могли прочувствовать настоящий ритм жизни региона,
-    избегая туристических толп. В программе собраны только проверенные места: от уютных
-    локальных кафе до панорамных точек для лучших фотографий.
-    Позвольте себе забыть о логистике и просто наслаждаться моментом.
-  `;
+  ${trip.description}
+  ${getTripMoodText(trip.description)}
+  Маршрут продуман так, чтобы поездка была не только красивой, но и удобной: с приятными локациями, интересными остановками, хорошим темпом и ощущением полноценного отдыха на протяжении всего путешествия.
+`;
 
   const highlights = [
     {
@@ -155,11 +198,10 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
 
           <button
             onClick={() => onToggleFavorite(trip)}
-            className={`flex items-center gap-3 px-6 py-4 rounded-full border transition-all shadow-sm ${
-              isFavorite
-                ? 'bg-rose-50 border-rose-200 text-rose-500'
-                : 'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-400 hover:shadow-md'
-            }`}
+            className={`flex items-center gap-3 px-6 py-4 rounded-full border transition-all shadow-sm cursor-pointer ${isFavorite
+              ? 'bg-rose-50 border-rose-200 text-rose-500'
+              : 'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-400 hover:shadow-md'
+              }`}
           >
             <Heart size={24} className={isFavorite ? 'fill-current' : ''} />
             <span className="text-sm font-black uppercase tracking-[0.18em]">
@@ -169,22 +211,23 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-[1600px] px-6 py-10">
-        <div className="mb-10 max-w-5xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-orange-100 text-orange-700 font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+      <main className="mx-auto max-w-[1600px] px-6 pt-6 pb-12">
+        <div className="mb-8 max-w-5xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-orange-100 text-orange-700 font-bold text-[10px] uppercase tracking-[0.2em] mb-3">
             <MapPin size={12} strokeWidth={3} /> {trip.country}
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black text-zinc-900 tracking-tighter leading-[0.9] mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-zinc-900 tracking-tighter leading-[0.95] mb-4">
             {trip.title}
           </h1>
 
-          <p className="text-xl text-zinc-500 leading-relaxed font-medium italic max-w-4xl">
+          <p className="text-lg md:text-xl text-zinc-500 leading-relaxed font-medium italic max-w-4xl">
             {trip.description}
           </p>
         </div>
 
-        <section className="mb-20 grid lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px] gap-8 items-start">
+        <section className="mb-10 grid lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_420px] gap-8 items-start">
+          {/* Слайдер остается без изменений */}
           <div className="relative group">
             <Swiper
               modules={[Navigation, Pagination]}
@@ -245,7 +288,7 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
                     Стоимость тура
                   </span>
                   <div className="flex items-end gap-2">
-                    <span className="text-5xl xl:text-6xl font-black text-zinc-900 leading-none">
+                    <span className="text-4xl xl:text-5xl font-black text-zinc-900 leading-none">
                       ${trip.price}
                     </span>
                     <span className="text-zinc-400 font-bold pb-1">/чел</span>
@@ -313,35 +356,37 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
 
         <div className="space-y-20">
           <section>
-            <div className="grid xl:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-8 items-start">
+            <div className="grid xl:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] gap-8 items-stretch">
               <div>
                 <h2 className="text-3xl font-black text-zinc-900 mb-8">О путешествии</h2>
-                <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 md:p-10 shadow-sm h-full">
-                  <p className="text-lg text-zinc-600 whitespace-pre-line leading-relaxed">
+                <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 md:p-10 shadow-sm self-start">
+                  <p className="text-lg text-zinc-600  leading-relaxed">
                     {detailedDescription}
                   </p>
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="rounded-[2.5rem] bg-gradient-to-br from-orange-500 to-rose-500 text-white p-8 shadow-sm">
-                  <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center mb-6">
-                    <Sparkles size={24} />
+              <div className="flex flex-col justify-end">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="rounded-[2.5rem] bg-gradient-to-br from-orange-500 to-rose-500 text-white p-8 shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center mb-6">
+                      <Sparkles size={24} />
+                    </div>
+                    <h3 className="text-2xl font-black mb-3 text-pretty">Эстетика маршрута</h3>
+                    <p className="text-white/85 leading-relaxed text-sm">
+                      Поездка собрана так, чтобы в ней было много красивых моментов и ощущения настоящего путешествия.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-black mb-3">Эстетика маршрута</h3>
-                  <p className="text-white/85 leading-relaxed">
-                    Поездка собрана так, чтобы в ней было много красивых моментов, сильных видов и ощущения настоящего путешествия.
-                  </p>
-                </div>
 
-                <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 shadow-sm">
-                  <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-6">
-                    <ShieldCheck size={24} />
+                  <div className="rounded-[2.5rem] bg-white border border-zinc-100 p-8 shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-6">
+                      <ShieldCheck size={24} />
+                    </div>
+                    <h3 className="text-2xl font-black text-zinc-900 mb-3 text-pretty">Комфорт и поддержка</h3>
+                    <p className="text-zinc-600 leading-relaxed text-sm">
+                      Мы берём на себя всю организацию, чтобы вы могли отдыхать без лишней суеты.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-black text-zinc-900 mb-3">Комфорт и поддержка</h3>
-                  <p className="text-zinc-600 leading-relaxed">
-                    Мы берём на себя организацию, логистику и помощь на каждом этапе, чтобы вы могли отдыхать без лишней суеты.
-                  </p>
                 </div>
               </div>
             </div>
@@ -389,38 +434,39 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
           </section>
 
           <section className="rounded-[3rem] bg-zinc-900 text-white p-8 md:p-10 xl:p-12">
-            <div className="grid xl:grid-cols-[320px_minmax(0,1fr)] gap-10">
+            <div className="grid xl:grid-cols-[380px_1fr] gap-x-16 gap-y-10">
               <div>
                 <h2 className="text-2xl md:text-3xl font-black mb-4 flex items-center gap-3">
-                  <Info className="text-orange-500" />
+                  <Info className="text-orange-500" size={28} />
                   Полезная информация
                 </h2>
-                <p className="text-zinc-400 leading-relaxed">
+                <p className="text-zinc-400 leading-relaxed max-w-sm">
                   Всё, что важно знать до бронирования и перед стартом поездки.
                 </p>
               </div>
 
-              <div className="space-y-2">
+              <div className="divide-y divide-white/10">
                 {faqs.map((faq) => (
-                  <div key={faq.id} className="border-b border-white/10 last:border-0">
+                  <div key={faq.id} className="group">
                     <button
                       onClick={() => setOpenFaq(openFaq === faq.id ? null : faq.id)}
-                      className="w-full flex items-center justify-between py-6 text-left gap-6"
+                      className="cursor-pointer w-full flex items-center justify-between py-5 text-left gap-6 transition-colors hover:text-orange-400"
                     >
                       <span className="font-bold text-lg">{faq.title}</span>
                       <ChevronDown
-                        className={`shrink-0 transition-transform duration-300 ${
-                          openFaq === faq.id ? 'rotate-180' : ''
-                        }`}
+                        size={20}
+                        className={`shrink-0 transition-transform duration-300 ${openFaq === faq.id ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
 
                     <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        openFaq === faq.id ? 'max-h-40 pb-6' : 'max-h-0'
-                      }`}
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaq === faq.id ? 'max-h-40 pb-5' : 'max-h-0'
+                        }`}
                     >
-                      <p className="text-zinc-400 leading-relaxed">{faq.content}</p>
+                      <p className="text-zinc-400 text-[0.95rem] leading-relaxed max-w-2xl">
+                        {faq.content}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -428,6 +474,7 @@ export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
             </div>
           </section>
 
+          {/* Отзывы без изменений */}
           <section className="pt-4">
             <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-6 mb-8">
               <div>
