@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronUp, ChevronDown, Sparkles } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -40,8 +40,8 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
 
       <div className="absolute inset-0 bg-zinc-900/40" />
 
-      <div className="relative mx-auto flex h-full max-w-[1800px] items-center px-4 sm:px-6 lg:px-8">
-        <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_360px] lg:items-center">
+      <div className="relative mx-auto flex h-full max-w-[2000px] items-center px-4 sm:px-6 lg:px-8">
+        <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_400px] lg:items-center">
           <div className="max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-md ring-1 ring-white/20">
               <Sparkles size={12} className="text-yellow-400" />
@@ -57,42 +57,44 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
             </p>
           </div>
 
-          <div className="relative hidden min-h-[420px] lg:block lg:-translate-y-6">
-            <div className="relative">
-              <div className="rounded-[28px] bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/20">
-                <Swiper
-                  modules={[Autoplay]}
-                  spaceBetween={16}
-                  slidesPerView={1}
-                  loop
-                  autoplay={{
-                    delay: 6200,
-                    disableOnInteraction: false,
-                  }}
-                  onSwiper={(swiper) => {
-                    heroSwiperRef.current = swiper;
-                  }}
-                >
-                  {trips.slice(0, 3).map((trip) => (
-                    <SwiperSlide key={trip.id}>
-                      <HeroTripCard
-                        trip={trip}
-                        isFavorite={favoriteIds.has(trip.id)}
-                        onToggleFavorite={onToggleFavorite}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+          <div className="relative hidden min-h-[440px] lg:block lg:-translate-y-6 lg:-translate-x-14">
+            <div className="relative flex items-center">
+              <div className="relative w-[380px]">
+                <div className="rounded-[28px] bg-white/10 p-3 backdrop-blur-xl ring-1 ring-white/20">
+                  <Swiper
+                    modules={[Autoplay]}
+                    spaceBetween={16}
+                    slidesPerView={1}
+                    loop
+                    autoplay={{
+                      delay: 6200,
+                      disableOnInteraction: false,
+                    }}
+                    onSwiper={(swiper) => {
+                      heroSwiperRef.current = swiper;
+                    }}
+                  >
+                    {trips.slice(0, 3).map((trip) => (
+                      <SwiperSlide key={trip.id}>
+                        <HeroTripCard
+                          trip={trip}
+                          isFavorite={favoriteIds.has(trip.id)}
+                          onToggleFavorite={onToggleFavorite}
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
               </div>
 
-              <div className="absolute -bottom-13 left-[-45px] z-20 flex items-center gap-2">
+              <div className="ml-4 flex flex-col gap-2">
                 <button
                   type="button"
                   onClick={() => heroSwiperRef.current?.slidePrev()}
                   className="flex h-12 w-12 items-center justify-center rounded-full cursor-pointer bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80"
                   aria-label="Предыдущий слайд"
                 >
-                  <ChevronLeft size={18} />
+                  <ChevronUp size={18} />
                 </button>
 
                 <button
@@ -101,7 +103,7 @@ const HeroSection = ({ trips, favoriteIds, onToggleFavorite }) => {
                   className="flex h-12 w-12 items-center justify-center rounded-full cursor-pointer bg-white text-zinc-900 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.45)] ring-1 ring-white/80"
                   aria-label="Следующий слайд"
                 >
-                  <ChevronRight size={18} />
+                  <ChevronDown size={18} />
                 </button>
               </div>
             </div>

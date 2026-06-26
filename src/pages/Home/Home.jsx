@@ -47,7 +47,7 @@ export const Home = ({ favorites = [], onToggleFavorite }) => {
         onToggleFavorite={onToggleFavorite}
       />
 
-      <section className="relative mx-auto max-w-[1800px] px-4 sm:px-6 lg:px-8">
+      <section className="relative mx-auto max-w-[2000px] px-4 sm:px-6 lg:px-8">
         <TripsFiltersBar
           search={search}
           onSearchChange={setSearch}

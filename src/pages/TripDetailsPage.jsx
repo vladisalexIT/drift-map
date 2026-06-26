@@ -31,6 +31,9 @@ import 'swiper/css/pagination';
 
 export const TripDetailsPage = ({ favorites = [], onToggleFavorite }) => {
   const { id } = useParams();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState(null);
